@@ -11,6 +11,11 @@ import { PageMeComponent } from './page-me/page-me.component';
 import { PageLegalComponent } from './page-legal/page-legal.component';
 import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+import { BsUtilModule } from 'src/bs-util/bs-util.module';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MyAuthInterceptor } from './common/interceptor/my-auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -25,10 +30,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule
+    AppRoutingModule ,
+    FormsModule,
+    TabsModule.forRoot(),
+    BsUtilModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: MyAuthInterceptor,
+    multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
