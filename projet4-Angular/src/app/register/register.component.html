@@ -1,0 +1,33 @@
+<p>register works!</p>
+<form #formRegister="ngForm" class="form-horizontal">
+
+    <div class="form-group row">
+        <label class="col-sm-4">username : </label>
+        <div class="col-sm-8">
+            <input [(ngModel)]="login.username" name="username" required />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4">e-mail : </label>
+        <div class="col-sm-8">
+            <input [(ngModel)]="login.email" name="email" required />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4">password :</label>
+        <div class="col-sm-8">
+            <input [(ngModel)]="login.password" name="password" required />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-8 offset-sm-4">
+            <input type="button" [disabled]="!formRegister.form.valid" class="btn btn-primary" value="créer et se connecter"
+                (click)="onRegister()" />
+            <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+        </div>
+    </div>
+</form>
+{{message | uppercase}}

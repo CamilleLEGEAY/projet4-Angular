@@ -1,5 +1,6 @@
 export class Login {
     constructor(
-		public username : string = "admin1",
-		public password: string = "pwdadmin1"){}
+		public email: string = "a@a.fr",
+		public password: string = "12345678",
+		public username: string ="Amine"){}
 }

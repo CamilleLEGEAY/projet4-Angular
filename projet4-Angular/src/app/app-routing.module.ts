@@ -5,6 +5,7 @@ import { PageMeComponent } from './page-me/page-me.component';
 import { PageResultatComponent } from './page-resultat/page-resultat.component';
 import { PageLegalComponent } from './page-legal/page-legal.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 
 
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'pageme', component: PageMeComponent },
   { path: 'pageresultat', component: PageResultatComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'pagelegal', component: PageLegalComponent }
 ];
 

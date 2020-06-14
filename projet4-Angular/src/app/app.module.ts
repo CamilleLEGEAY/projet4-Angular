@@ -16,6 +16,7 @@ import { BsUtilModule } from 'src/bs-util/bs-util.module';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MyAuthInterceptor } from './common/interceptor/my-auth-interceptor';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { MyAuthInterceptor } from './common/interceptor/my-auth-interceptor';
     PageAboutComponent,
     PageMeComponent,
     PageLegalComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
