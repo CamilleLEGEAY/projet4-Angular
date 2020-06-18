@@ -6,6 +6,7 @@ import { PageResultatComponent } from './page-resultat/page-resultat.component';
 import { PageLegalComponent } from './page-legal/page-legal.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { MyaccountComponent } from './myaccount/myaccount.component';
 
 
 
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'pageresultat', component: PageResultatComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'myaccount', component: MyaccountComponent },
   { path: 'pagelegal', component: PageLegalComponent }
 ];
 

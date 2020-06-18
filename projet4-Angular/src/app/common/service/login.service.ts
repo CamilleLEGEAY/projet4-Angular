@@ -43,6 +43,34 @@ export class LoginService {
   }
 
   /**
+   * to update a user +save his token
+   * @param login 
+   */
+  public postUpdate(login: Login): Observable<LoginResponse>{
+    let url="msLogin/updateUser"; //sera préfixé par http://localhost:8282
+    //via l'option --proxy-config proxy.conf.json de ng serve
+    //NB: map() transforme et tap() declenche un traitement en plus sans transformer
+    return this.http.put<LoginResponse>(url,login, {headers: this._headers} )
+           .pipe(
+               tap((loginResponse)=>{ this.sauvegarderJeton(loginResponse);})
+           );
+  }
+
+  /**
+   * to update a user +save his token
+   * @param login 
+   */
+  public postDelete(): Observable<LoginResponse>{
+    let url="msLogin/supprUser"; //sera préfixé par http://localhost:8282
+    //via l'option --proxy-config proxy.conf.json de ng serve
+    //NB: map() transforme et tap() declenche un traitement en plus sans transformer
+    return this.http.delete<LoginResponse>(url, {headers: this._headers} )
+    .pipe(
+      tap((loginResponse)=>{ this.sauvegarderJeton(loginResponse);})
+    );
+  }
+
+  /**
    * save de token
    * @param loginResponse
    */
