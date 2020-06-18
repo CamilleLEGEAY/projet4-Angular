@@ -27,13 +27,14 @@ export class LoginComponent implements OnInit {
                this.message = loginResponse.message;
                this.checkLogin(loginResponse);
           },
-         (err)=>{console.log(err); }
+         (err)=>{console.log(err); this.message = "Votre identifiant ou votre mot de passe est incorrect";}
+         
     );
   }
 
   checkLogin(loginResponse :LoginResponse){
     if (loginResponse.token!= null){
-      console.log(loginResponse.token);
+      console.log(localStorage.getItem('token'));
       let link = [ '/'];
       this.router.navigate(link);
     }

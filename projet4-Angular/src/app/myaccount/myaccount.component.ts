@@ -3,6 +3,7 @@ import { LoginService } from '../common/service/login.service';
 import { Login } from '../common/data/login';
 import { LoginResponse } from '../common/data/login-response';
 import { Router } from '@angular/router';
+import { LoginUpdate } from '../common/data/login-update';
 
 @Component({
   selector: 'app-myaccount',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 export class MyaccountComponent implements OnInit {
 
   login : Login  = new Login();
+  loginUpdate : LoginUpdate = new LoginUpdate();
   message : string;
 
   constructor(private loginService : LoginService, private router: Router) { }
@@ -20,11 +22,13 @@ export class MyaccountComponent implements OnInit {
   }
 
   update(){
-    this.loginService.postUpdate(this.login)
+    this.loginUpdate.username = this.login.username;
+    this.loginUpdate.token = localStorage.getItem('token').trim();
+    this.loginService.postUpdate(this.loginUpdate)
     .subscribe(
-        (loginResponse : LoginResponse)=>{
-            console.log(JSON.stringify(loginResponse));
-            this.message = loginResponse.message;
+        (reponse : string)=>{
+            console.log(JSON.stringify(reponse));
+            this.message = reponse;
        },
       (err)=>{console.log(err); }
     );
