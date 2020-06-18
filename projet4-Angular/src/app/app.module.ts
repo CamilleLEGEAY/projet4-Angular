@@ -17,6 +17,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MyAuthInterceptor } from './common/interceptor/my-auth-interceptor';
 import { RegisterComponent } from './register/register.component';
+import { MyaccountComponent } from './myaccount/myaccount.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { RegisterComponent } from './register/register.component';
     PageMeComponent,
     PageLegalComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    MyaccountComponent
   ],
   imports: [
     BrowserModule,
