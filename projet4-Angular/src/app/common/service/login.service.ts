@@ -59,12 +59,12 @@ export class LoginService {
    * @param login 
    */
   public postDelete(): Observable<LoginResponse>{
-    let url="msLogin/supprUser"; //sera préfixé par http://localhost:8282
+    let url="msLogin/supprUser/"+localStorage.getItem('token').trim(); //sera préfixé par http://localhost:8282
     //via l'option --proxy-config proxy.conf.json de ng serve
     //NB: map() transforme et tap() declenche un traitement en plus sans transformer
     return this.http.delete<LoginResponse>(url, {headers: this._headers} )
     .pipe(
-      tap((loginResponse)=>{ this.sauvegarderJeton(loginResponse);})
+      tap((loginResponse)=>{ localStorage.setItem('token',loginResponse.token);})
     );
   }
 
