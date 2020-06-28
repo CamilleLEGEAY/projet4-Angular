@@ -23,7 +23,7 @@ export class MyaccountComponent implements OnInit {
 
   update(){
     this.loginUpdate.username = this.login.username;
-    this.loginUpdate.token = localStorage.getItem('token').trim();
+    this.loginUpdate.token = sessionStorage.getItem('token').trim();
     this.loginService.postUpdate(this.loginUpdate)
     .subscribe(
         (reponse : string)=>{
@@ -49,7 +49,7 @@ export class MyaccountComponent implements OnInit {
 
   checkDelete(loginResponse :LoginResponse){
     if (loginResponse.token== null){
-      console.log(localStorage.getItem('token'));
+      console.log(sessionStorage.getItem('token'));
       let link = [ '/'];
       this.router.navigate(link);
     }

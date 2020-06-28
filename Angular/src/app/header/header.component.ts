@@ -14,10 +14,10 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout():void {
-    localStorage.setItem('token', null);
+    sessionStorage.setItem('token', null);
     let link = [ '/pageresultat'];
     this.router.navigate(link);
-    console.log(localStorage.getItem("token"));
+    console.log(sessionStorage.getItem("token"));
   }
 
 }

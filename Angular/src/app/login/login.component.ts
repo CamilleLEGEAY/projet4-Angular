@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
 
   checkLogin(loginResponse :LoginResponse){
     if (loginResponse.token!= null){
-      console.log(localStorage.getItem('token'));
+      console.log(sessionStorage.getItem('token'));
       let link = [ '/'];
       this.router.navigate(link);
     }

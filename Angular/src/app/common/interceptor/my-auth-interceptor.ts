@@ -6,11 +6,11 @@ import { Observable } from 'rxjs';
 export class MyAuthInterceptor implements HttpInterceptor {
 
 intercept (req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        let token = localStorage.getItem('token');
+        let token = sessionStorage.getItem('token');
         let tokenizedReq =req.clone({
           setHeaders:{
             /*Le format de token attendu par les micro-services est "Bearer "+token.
-            L'espace avant le token est enregistré dans le localStorage à la récupération du token.*/
+            L'espace avant le token est enregistré dans le sessionStorage à la récupération du token.*/
             Authorization: 'Bearer'+token
           }
         })
