@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RecherchesService } from '../common/service/recherches.service';
 import { Etablissement } from '../common/data/etablissement';
+import { ExportDataService } from '../common/service/export-data.service';
 
 @Component({
   selector: 'app-page-resultat',
@@ -12,7 +13,7 @@ export class PageResultatComponent implements OnInit {
   allEtablissement:Etablissement[];
   shownEtablissement:Etablissement[];
 
-  constructor(private recherchesService : RecherchesService) {
+  constructor(private recherchesService : RecherchesService, private exportData : ExportDataService) {
     this.start();    
   }
   
@@ -28,6 +29,12 @@ export class PageResultatComponent implements OnInit {
       },
       (err)=>{console.log(err);}
     )
+  }
+
+  createExcel(){
+    if (this.shownEtablissement[1000000]=== null){
+    this.exportData.exportAsExcelFile(this.shownEtablissement,"RLEF");
+    }
   }
 
   /*findAll(){
