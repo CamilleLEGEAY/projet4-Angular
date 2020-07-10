@@ -5,14 +5,16 @@ import { LoginResponse } from '../data/login-response';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LoginUpdate } from '../data/login-update';
+import { Proxy } from '../dao/proxy';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  private _headers = new HttpHeaders({'Content-Type': 'application/json'}); 
-
+  private _headers = new HttpHeaders({'Content-Type': 'application/json'});
+  private proxy : Proxy = new Proxy();
+  
   constructor(private http : HttpClient) { }
 
   /**
@@ -20,8 +22,7 @@ export class LoginService {
    * @param login 
    */
   public postRegister(login: Login): Observable<LoginResponse>{
-    let url="msLogin/public/newUser"; //sera préfixé par http://localhost:8282
-    //via l'option --proxy-config proxy.conf.json de ng serve
+    let url= this.proxy.msLogin+"/public/newUser";
     //NB: map() transforme et tap() declenche un traitement en plus sans transformer
     return this.http.post<LoginResponse>(url,login, {headers: this._headers} )
            .pipe(
@@ -34,8 +35,7 @@ export class LoginService {
    * @param login 
    */
   public postLogin(login: Login): Observable<LoginResponse>{
-     let url="msLogin/public/login"; //sera préfixé par http://localhost:8282
-     //via l'option --proxy-config proxy.conf.json de ng serve
+     let url=this.proxy.msLogin+"/public/login";
      //NB: map() transforme et tap() declenche un traitement en plus sans transformer
      return this.http.post<LoginResponse>(url,login, {headers: this._headers} )
             .pipe(
@@ -48,7 +48,7 @@ export class LoginService {
    * @param loginUpdate 
    */
   public postUpdate(loginUpdate: LoginUpdate): Observable<String>{
-    let url="msLogin/updateUser"; //sera préfixé par http://localhost:8282
+    let url=this.proxy.msLogin+"/updateUser"; //sera préfixé par http://localhost:8282
     //via l'option --proxy-config proxy.conf.json de ng serve
     //NB: map() transforme et tap() declenche un traitement en plus sans transformer
     return this.http.put<String>(url,loginUpdate, {headers: this._headers} )
@@ -59,8 +59,7 @@ export class LoginService {
    * @param login 
    */
   public postDelete(): Observable<LoginResponse>{
-    let url="msLogin/supprUser/"+sessionStorage.getItem('token').trim(); //sera préfixé par http://localhost:8282
-    //via l'option --proxy-config proxy.conf.json de ng serve
+    let url=this.proxy.msLogin+"/supprUser/"+sessionStorage.getItem('token').trim();
     //NB: map() transforme et tap() declenche un traitement en plus sans transformer
     return this.http.delete<LoginResponse>(url, {headers: this._headers} )
     .pipe(

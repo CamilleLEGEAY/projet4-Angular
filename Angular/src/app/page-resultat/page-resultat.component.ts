@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RecherchesService } from '../common/service/recherches.service';
 import { Etablissement } from '../common/data/etablissement';
 import { ExportDataService } from '../common/service/export-data.service';
+import { Builder } from '../common/dao/builder';
 
 @Component({
   selector: 'app-page-resultat',
@@ -12,6 +13,7 @@ export class PageResultatComponent implements OnInit {
 
   allEtablissement:Etablissement[];
   shownEtablissement:Etablissement[];
+  builder: Builder = new Builder();
 
   constructor(private recherchesService : RecherchesService, private exportData : ExportDataService) {
     this.start();    
@@ -20,12 +22,28 @@ export class PageResultatComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  start():void{
+  /**
+   * to test avec MongoDB
+   */
+  /*start():void{
     this.recherchesService.getAll()
     .subscribe(
       (reponse)=>{
         this.allEtablissement = reponse ;
         this.shownEtablissement = this.allEtablissement;
+      },
+      (err)=>{console.log(err);}
+    )
+  }*/
+  /**
+   * to test avec API
+   */
+  start():void{
+    this.recherchesService.getAll()
+    .subscribe(
+      (reponse)=>{
+        this.shownEtablissement = this.builder.arrayEtablissementBuilder(reponse.etablissements) ;
+        console.log(this.shownEtablissement);
       },
       (err)=>{console.log(err);}
     )
