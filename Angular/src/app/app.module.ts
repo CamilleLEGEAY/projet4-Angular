@@ -18,6 +18,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MyAuthInterceptor } from './common/interceptor/my-auth-interceptor';
 import { RegisterComponent } from './register/register.component';
 import { MyaccountComponent } from './myaccount/myaccount.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { MyaccountComponent } from './myaccount/myaccount.component';
     FormsModule,
     TabsModule.forRoot(),
     BsUtilModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

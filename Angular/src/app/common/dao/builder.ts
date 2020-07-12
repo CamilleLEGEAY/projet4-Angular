@@ -19,9 +19,9 @@ export class Builder {
         sortant.date_creation = entrant.date_creation;
         sortant.effectifs = TrancheEffectif[this.findEffectif(entrant.tranche_effectifs)];
         sortant.activite_principale = this.findActivite(entrant);
-        if(entrant.etablissement_siege===false){
+        if (entrant.etablissement_siege === false) {
             sortant.etablissement_siege = entrant.etablissement_siege;
-        }else {
+        } else {
             sortant.etablissement_siege = true;
         }
         sortant.complement_adresse = entrant.complement_adresse;
@@ -42,24 +42,24 @@ export class Builder {
      * @param UniteLegaleEntrant
      * @returns UniteLegaleSortant
      */
-   /* public uniteLegaleEntrantToSortant(entrant: UniteLegaleEntrant): UniteLegaleSortant {
-        var sortant: UniteLegaleSortant = new UniteLegaleSortant;
-        sortant.denomination = this.findDenominationUniteLegale(entrant);
-        if (sortant.denomination = null) {
-            return sortant;
-        }
-        sortant.siren = entrant.siren;
-        sortant.date_creation = this.findCreationUniteLegale(entrant);
-        sortant.identifiant_association = entrant.identifiant_association;
-        sortant.effectifs = TrancheEffectif[this.findEffectif(entrant.tranche_effectifs)];
-        sortant.categorie_entreprise = entrant.categorie_entreprise;
-        sortant.etat_administratif = entrant.etat_administratif;
-        sortant.activite_principale = entrant.activite_principale;
-        sortant.caractere_employeur = entrant.caractere_employeur;
-        sortant.etablissement_siege = this.etablissementEntrantToSortant(entrant.etablissement_siege);
-        sortant.etablissements = this.arrayEtablissementBuilder(entrant.etablissements);
-        return sortant;
-    }*/
+    /* public uniteLegaleEntrantToSortant(entrant: UniteLegaleEntrant): UniteLegaleSortant {
+         var sortant: UniteLegaleSortant = new UniteLegaleSortant;
+         sortant.denomination = this.findDenominationUniteLegale(entrant);
+         if (sortant.denomination = null) {
+             return sortant;
+         }
+         sortant.siren = entrant.siren;
+         sortant.date_creation = this.findCreationUniteLegale(entrant);
+         sortant.identifiant_association = entrant.identifiant_association;
+         sortant.effectifs = TrancheEffectif[this.findEffectif(entrant.tranche_effectifs)];
+         sortant.categorie_entreprise = entrant.categorie_entreprise;
+         sortant.etat_administratif = entrant.etat_administratif;
+         sortant.activite_principale = entrant.activite_principale;
+         sortant.caractere_employeur = entrant.caractere_employeur;
+         sortant.etablissement_siege = this.etablissementEntrantToSortant(entrant.etablissement_siege);
+         sortant.etablissements = this.arrayEtablissementBuilder(entrant.etablissements);
+         return sortant;
+     }*/
     /**
      * @param listeEtablissementEntrant
      * @returns listeEtablissementSortant 
@@ -98,17 +98,21 @@ export class Builder {
 
     private findDenominationUniteLegale(entrant: UniteLegaleEntrant): string {
         var denomination: string;
-        if (entrant.denomination_usuelle_1 != null) {
-            denomination = entrant.denomination_usuelle_1;
+        if (entrant.denomination != null) {
+            denomination = entrant.denomination;
         } else {
-            if (entrant.denomination_usuelle_2 != null) {
-                denomination = entrant.denomination_usuelle_2;
+            if (entrant.denomination_usuelle_1 != null) {
+                denomination = entrant.denomination_usuelle_1;
             } else {
-                if (entrant.denomination_usuelle_3 != null) {
-                    denomination = entrant.denomination_usuelle_3;
+                if (entrant.denomination_usuelle_2 != null) {
+                    denomination = entrant.denomination_usuelle_2;
                 } else {
-                    if (entrant.nom != null) {
-                        denomination = entrant.nom + " " + entrant.prenom_1;
+                    if (entrant.denomination_usuelle_3 != null) {
+                        denomination = entrant.denomination_usuelle_3;
+                    } else {
+                        if (entrant.nom != null) {
+                            denomination = entrant.nom + " " + entrant.prenom_1;
+                        }
                     }
                 }
             }
