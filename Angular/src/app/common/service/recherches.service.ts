@@ -23,19 +23,18 @@ export class RecherchesService {
     return this.http.get<any>(url);
   }
 
-  doSearch(urlFinal: string) : Observable<ReponseApiEtablissements> {
+  doSearch(urlFinal: string): Observable<ReponseApiEtablissements> {
     console.log(urlFinal);
     return this.http.get<ReponseApiEtablissements>(urlFinal);
   }
-  
 
 
 
-  cpDepartement(departement: string): string[] {
-    let listeCP: Array<string> = new Array<string>();
-    listeCP.push("77100");
-    listeCP.push("30900");
-    return listeCP;
+  /**
+   * fait une liste des codes postaux du departement
+   */
+  cpDepartement(departement: string): Observable<any[]> {
+    let url = urlDepartement + departement + "/communes";
+    return this.http.get<any[]>(url);
   }
-
 }

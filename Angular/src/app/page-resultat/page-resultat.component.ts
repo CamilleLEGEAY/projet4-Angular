@@ -69,19 +69,16 @@ export class PageResultatComponent implements OnInit {
       this.exportData.exportAsExcelFile(this.allEtablissement, "RLEF");
     }
   }
-  
+
   /**
    * to know how many responses for a research and get first page
    */
-  onRecherche() {
+  async onRecherche() {
     console.log(this.recherche);
     let url = urlEtablissement + "&per_page=20&page=1";
     url = this.urlLevelOne(this.recherche, url);
 
     if (this.recherche.departement != null && this.recherche.code_postal === undefined || this.recherche.code_postal === "") {
-      if (this.recherche.departement === "2A" || this.recherche.departement === "2B") {
-        this.recherche.departement = "20";
-      }
       console.log("I'm doing searchWithDepartement");
       this.searchWithDepartement(this.recherche, url);
     }
@@ -92,6 +89,7 @@ export class PageResultatComponent implements OnInit {
       }
       else {
         console.log("I'm doing doSearch");
+        await new Promise(r => setTimeout(r, 300));
         this.recherchesService.doSearch(url).subscribe((reponse) => {
           this.shownEtablissement = this.builder.arrayEtablissementBuilder(reponse.etablissements);
           this.nbResultat = reponse.meta.total_results;
@@ -109,28 +107,43 @@ export class PageResultatComponent implements OnInit {
    */
   private async searchWithDepartement(recherche: Recherche, url: string) {
     let observableBatch = [];
+    let listeCP: string[];
     let reponseAPIconcat: ReponseApiEtablissements = new ReponseApiEtablissements();
-    let listeCP = this.recherchesService.cpDepartement(recherche.departement);
-    if (recherche.effectifs != null) {
-      for (let cp of listeCP) {
-        let urlLevelTwo = url + "&code_postal=" + cp;
-        this.searchWithEffectif(recherche.effectifs, urlLevelTwo);
-      }
-    }
-    else {
-      for (let cp of listeCP) {
-        let urlLevelTwo = url + "&code_postal=" + cp;
-        observableBatch.push(this.recherchesService.doSearch(urlLevelTwo));
-      }
-      forkJoin<ReponseApiEtablissements>(observableBatch).subscribe((reponse) => {
-        for (let rep of reponse) {
-          reponseAPIconcat.meta.total_results = reponseAPIconcat.meta.total_results + rep.meta.total_results;
-          reponseAPIconcat.etablissements = rep.etablissements;
-        }
-        this.shownEtablissement = this.builder.arrayEtablissementBuilder(reponseAPIconcat.etablissements);
-        this.nbResultat = reponseAPIconcat.meta.total_results;
-      });
-    }
+    this.recherchesService.cpDepartement(recherche.departement)
+      .subscribe(
+        async (reponse) => {
+          for (let commune of reponse) {
+            if (listeCP === undefined) {
+              listeCP = Array.from(new Set(commune.codesPostaux));
+            }
+            else {
+              listeCP = Array.from(new Set(listeCP.concat(commune.codesPostaux)));
+            }
+          }
+
+          if (recherche.effectifs != null) {
+            for (let cp of listeCP) {
+              let urlLevelTwo = url + "&code_postal=" + cp;
+              this.searchWithEffectif(recherche.effectifs, urlLevelTwo);
+            }
+          }
+          else {
+            for (let cp of listeCP) {
+              let urlLevelTwo = url + "&code_postal=" + cp;
+              await new Promise(r => setTimeout(r, 1000));
+              observableBatch.push(this.recherchesService.doSearch(urlLevelTwo));
+              console.log("done : "+cp);
+            }
+            forkJoin<ReponseApiEtablissements>(observableBatch).subscribe((reponse) => {
+              for (let rep of reponse) {
+                reponseAPIconcat.meta.total_results = reponseAPIconcat.meta.total_results + rep.meta.total_results;
+                reponseAPIconcat.etablissements = rep.etablissements;
+              }
+              this.shownEtablissement = this.builder.arrayEtablissementBuilder(reponseAPIconcat.etablissements);
+              this.nbResultat = reponseAPIconcat.meta.total_results;
+            });
+          }
+        }) 
   }
   /**
    * fill the url with effectif criteria and lauch doSearch
@@ -143,6 +156,7 @@ export class PageResultatComponent implements OnInit {
     let listeTranche = this.listeTrancheEffectif(effectif);
     for (let tranche of listeTranche) {
       let urlLastLevel = url + "&tranche_effectifs=" + tranche;
+      await new Promise(r => setTimeout(r, 1000));
       observableBatch.push(this.recherchesService.doSearch(urlLastLevel))
     }
     forkJoin<ReponseApiEtablissements>(observableBatch).subscribe((reponse) => {
