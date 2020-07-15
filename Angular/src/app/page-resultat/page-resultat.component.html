@@ -39,7 +39,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-4">code NAF / APE : </label>
                                 <div class="col-sm-8">
-                                    <input type="text" [(ngModel)]="recherche.date_creation" name="date_creation"
+                                    <input type="text" [(ngModel)]="recherche.activite_principale" name="activite_principale"
                                         pattern="[0-9]{2}.[0-9]{2}[A-Z]{1}" />
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
         <br />
         <br />
         <div>
-            <input type='button' id="btnExp" value='Export Excel' (click)="createExcel()"
+            <input type='button' id="btnExp" value='Export Excel' (click)="onCreateExcel()"
                 [disabled]="nbResultat>2000" /> <br />
         </div>
         <br />

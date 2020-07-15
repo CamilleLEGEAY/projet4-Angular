@@ -14,17 +14,21 @@ import { forkJoin } from 'rxjs';
 })
 export class PageResultatComponent implements OnInit {
 
-  builder: Builder = new Builder();
-  allEtablissement: Etablissement[];
+  //for front
   shownEtablissement: Etablissement[];
   recherche: Recherche = new Recherche();
   nbResultat: number;
   departements: any[];
+  listeCP: any[];
 
-
+  //local
+  builder: Builder = new Builder();
+  reponseAPIconcat: ReponseApiEtablissements = new ReponseApiEtablissements();
+  allEtablissement: Etablissement[] = [];
+  observableBatch = [];
 
   constructor(private recherchesService: RecherchesService, private exportData: ExportDataService) {
-    this.start();
+    //this.start();
     this.initDepartements();
   }
 
@@ -33,14 +37,13 @@ export class PageResultatComponent implements OnInit {
 
   start(): void {
     this.recherchesService.getPageOne()
-      .subscribe(
-        (reponse) => {
-          if (this.shownEtablissement === undefined) {
-            this.shownEtablissement = this.builder.arrayEtablissementBuilder(reponse.etablissements);
-            this.nbResultat = reponse.meta.total_results;
-            console.log("liste par défaut chargé");
-          }
-        },
+      .subscribe((reponse) => {
+        if (this.shownEtablissement === undefined) {
+          this.shownEtablissement = this.builder.arrayEtablissementBuilder(reponse.etablissements);
+          this.nbResultat = reponse.meta.total_results;
+          console.log("liste par défaut chargé");
+        }
+      },
         (err) => {
           console.log(err);
         }
@@ -52,98 +55,112 @@ export class PageResultatComponent implements OnInit {
    */
   initDepartements(): void {
     this.recherchesService.initDepartements()
-      .subscribe(
-        (reponse) => {
-          this.departements = reponse;
-          console.log("departements filled");
-        },
+      .subscribe((reponse) => {
+        this.departements = reponse;
+        console.log("departements filled");
+      },
         (err) => {
           console.log(err);
         }
       )
   }
 
-  createExcel() {
-    //this.recherchesService.getExtraction(this.recherche)
-    if (this.allEtablissement[1000000] === null) {
-      this.exportData.exportAsExcelFile(this.allEtablissement, "RLEF");
+  /**
+   * fill the selector HTML
+   */
+  initCP(departement: string): void {
+    this.recherchesService.initCP(departement)
+      .subscribe((reponse) => {
+        this.listeCP = reponse;
+        console.log("CP filled");
+      },
+        (err) => {
+          console.log(err);
+        }
+      )
+  }
+
+  /**
+   * to get every data of the research to produce the Excel fill
+   */
+  async onCreateExcel() {
+    console.log("extraction started");
+    this.reponseAPIconcat = new ReponseApiEtablissements();
+    let url = urlEtablissement + "&per_page=100";
+    url = this.urlLevelOne(this.recherche, url);
+
+    if (this.recherche.effectifs != null) {
+      console.log("I'm doing extractionWithEffectif");
+      this.extractionWithEffectif(this.recherche.effectifs, url);
+    }
+    else {
+      console.log("I'm doing recupereAssembleMAJ");
+      this.doSearchAndPrint(1, url);
     }
   }
+  /**
+   * lauch the recuperation of data + print
+   * @param effectifs 
+   * @param url 
+   */
+  private extractionWithEffectif(effectifs: number, url: string) {
+    let listeTranche = this.listeTrancheEffectif(effectifs);
+    for (let tranche in listeTranche) {
+      let urlLastLevel = url + "&tranche_effectifs=" + listeTranche[tranche];
+      console.log(urlLastLevel);
+      this.doSearchAndPrint(1, urlLastLevel)
+    }
+  }
+  /**
+   * recursive pour récupération de toutes les entreprises à imprimer
+   * launch print
+   */
+  private doSearchAndPrint(page: number, url: string) {
+    let urlNewPage = url + "&page=" + page;
+    this.recherchesService.doSearch(urlNewPage).subscribe((reponse) => {
+      this.reponseAPIconcat.etablissements = this.reponseAPIconcat.etablissements.concat(reponse.etablissements);
+      page++;
+      if (reponse.meta.total_pages > reponse.meta.page) {
+        this.doSearchAndPrint(page, url)
+      }
+      if (this.reponseAPIconcat.etablissements.length === this.nbResultat) {
+        this.print();
+      }
+    },
+      (err) => { console.log(err); });
+  }
+  /**
+   * print this.reponseAPIcancat.etablissement
+   */
+  private print(){
+    this.allEtablissement = this.builder.arrayEtablissementBuilder(this.reponseAPIconcat.etablissements);
+    console.log("on va imprimer les " + this.allEtablissement.length + " entreprises");
+    this.exportData.exportAsExcelFile(this.allEtablissement, "RLEF");
+  }
+
+
 
   /**
    * to know how many responses for a research and get first page
    */
   async onRecherche() {
+    this.nbResultat = null;
     console.log(this.recherche);
     let url = urlEtablissement + "&per_page=20&page=1";
     url = this.urlLevelOne(this.recherche, url);
 
-    if (this.recherche.departement != null && this.recherche.code_postal === undefined || this.recherche.code_postal === "") {
-      console.log("I'm doing searchWithDepartement");
-      this.searchWithDepartement(this.recherche, url);
+    if (this.recherche.effectifs != null) {
+      console.log("I'm doing searchWithEffectif");
+      this.searchWithEffectif(this.recherche.effectifs, url);
     }
     else {
-      if (this.recherche.effectifs != null) {
-        console.log("I'm doing searchWithEffectif");
-        this.searchWithEffectif(this.recherche.effectifs, url);
-      }
-      else {
-        console.log("I'm doing doSearch");
-        await new Promise(r => setTimeout(r, 300));
-        this.recherchesService.doSearch(url).subscribe((reponse) => {
-          this.shownEtablissement = this.builder.arrayEtablissementBuilder(reponse.etablissements);
-          this.nbResultat = reponse.meta.total_results;
-        },
-          (err) => { console.log(err); }
-        )
-      }
+      console.log("I'm doing doSearch");
+      this.recherchesService.doSearch(url).subscribe((reponse) => {
+        this.shownEtablissement = this.builder.arrayEtablissementBuilder(reponse.etablissements);
+        this.nbResultat = reponse.meta.total_results;
+      },
+        (err) => { console.log(err); });
     }
-  }
-
-  /**
-   * fill the url with departement and may be effectif criteria and lauch doSearch
-   * @param effectif 
-   * @param url 
-   */
-  private async searchWithDepartement(recherche: Recherche, url: string) {
-    let observableBatch = [];
-    let listeCP: string[];
-    let reponseAPIconcat: ReponseApiEtablissements = new ReponseApiEtablissements();
-    this.recherchesService.cpDepartement(recherche.departement)
-      .subscribe(
-        async (reponse) => {
-          for (let commune of reponse) {
-            if (listeCP === undefined) {
-              listeCP = Array.from(new Set(commune.codesPostaux));
-            }
-            else {
-              listeCP = Array.from(new Set(listeCP.concat(commune.codesPostaux)));
-            }
-          }
-
-          if (recherche.effectifs != null) {
-            for (let cp of listeCP) {
-              let urlLevelTwo = url + "&code_postal=" + cp;
-              this.searchWithEffectif(recherche.effectifs, urlLevelTwo);
-            }
-          }
-          else {
-            for (let cp of listeCP) {
-              let urlLevelTwo = url + "&code_postal=" + cp;
-              await new Promise(r => setTimeout(r, 1000));
-              observableBatch.push(this.recherchesService.doSearch(urlLevelTwo));
-              console.log("done : "+cp);
-            }
-            forkJoin<ReponseApiEtablissements>(observableBatch).subscribe((reponse) => {
-              for (let rep of reponse) {
-                reponseAPIconcat.meta.total_results = reponseAPIconcat.meta.total_results + rep.meta.total_results;
-                reponseAPIconcat.etablissements = rep.etablissements;
-              }
-              this.shownEtablissement = this.builder.arrayEtablissementBuilder(reponseAPIconcat.etablissements);
-              this.nbResultat = reponseAPIconcat.meta.total_results;
-            });
-          }
-        }) 
   }
   /**
    * fill the url with effectif criteria and lauch doSearch
@@ -151,47 +168,47 @@ export class PageResultatComponent implements OnInit {
    * @param url 
    */
   private async searchWithEffectif(effectif: number, url: string) {
-    let observableBatch = [];
-    let reponseAPIconcat: ReponseApiEtablissements = new ReponseApiEtablissements();
+    this.observableBatch = [];
+    this.reponseAPIconcat = new ReponseApiEtablissements();
     let listeTranche = this.listeTrancheEffectif(effectif);
     for (let tranche of listeTranche) {
       let urlLastLevel = url + "&tranche_effectifs=" + tranche;
-      await new Promise(r => setTimeout(r, 1000));
-      observableBatch.push(this.recherchesService.doSearch(urlLastLevel))
+      this.observableBatch.push(this.recherchesService.doSearch(urlLastLevel))
     }
-    forkJoin<ReponseApiEtablissements>(observableBatch).subscribe((reponse) => {
+    forkJoin<ReponseApiEtablissements>(this.observableBatch).subscribe((reponse) => {
       for (let rep of reponse) {
-        reponseAPIconcat.meta.total_results = reponseAPIconcat.meta.total_results + rep.meta.total_results;
-        reponseAPIconcat.etablissements = rep.etablissements;
+        this.reponseAPIconcat.meta.total_results = this.reponseAPIconcat.meta.total_results + rep.meta.total_results;
+        this.reponseAPIconcat.etablissements = rep.etablissements;
       }
-      this.shownEtablissement = this.builder.arrayEtablissementBuilder(reponseAPIconcat.etablissements);
-      this.nbResultat = reponseAPIconcat.meta.total_results;
-    });
+      this.shownEtablissement = this.builder.arrayEtablissementBuilder(this.reponseAPIconcat.etablissements);
+      this.nbResultat = this.reponseAPIconcat.meta.total_results;
+    },
+      (err) => { console.log(err); });
   }
   /**
    * fill url for research with basic criteria
    * @param recherche 
    */
-  private urlLevelOne(recherche: Recherche, url: string): string {
+  private urlLevelOne(recherche: Recherche, url: string):string {
     let extentionURL = url;
 
-    if (recherche.siren != null) {
+    if (recherche.siren != null && recherche.code_postal != "") {
       let siren = "&siren=" + recherche.siren;
       extentionURL = extentionURL + siren;
     }
-    if (recherche.denomination != null) {
+    if (recherche.denomination != null && recherche.code_postal != "") {
       let denomination = "&denomnation=" + recherche.denomination;
       extentionURL = extentionURL + denomination;
     }
-    if (recherche.date_creation != null) {
+    if (recherche.date_creation != null && recherche.code_postal != "") {
       let date_creation = "&date_creation=" + recherche.date_creation;
       extentionURL = extentionURL + date_creation;
     }
-    if (recherche.libelle_commune != null) {
+    if (recherche.libelle_commune != null && recherche.code_postal != "") {
       let libelle_commune = "&libelle_commune=" + recherche.libelle_commune.toUpperCase();
       extentionURL = extentionURL + libelle_commune;
     }
-    if (recherche.code_postal != null) {
+    if (recherche.code_postal != null && recherche.code_postal != "") {
       let code_postal = "&code_postal=" + recherche.code_postal;
       extentionURL = extentionURL + code_postal;
     }
@@ -201,24 +218,29 @@ export class PageResultatComponent implements OnInit {
    * prepare the the research with the effectif criteria
    * @param valueEffectifs 
    */
-  private listeTrancheEffectif(valueEffectifs: number): any {
-    let listeTranche;
-    if (valueEffectifs == 1) { listeTranche = ["00", "01", "02", "03"] }
-    else {
-      if (valueEffectifs == 11) { listeTranche = [11]; }
-      else {
-        if (valueEffectifs == 12) { listeTranche = [12]; }
-        else {
-          if (valueEffectifs == 21) { listeTranche = [21]; }
-          else {
-            if (valueEffectifs == 22) { listeTranche = [22]; }
-            else {
-              if (valueEffectifs == 5) { listeTranche = [31, 32]; }
-              else { listeTranche = [41, 42, 51, 52, 53]; }
-            }
-          }
-        }
-      }
+  private listeTrancheEffectif(valueEffectifs: number): any[] {
+    var listeTranche = [];
+    switch (valueEffectifs.toString()) {
+      case '1':
+        listeTranche = ["00", "01", "02", "03"];
+        break;
+      case '11':
+        listeTranche = [11];
+        break;
+      case '12':
+        listeTranche = [12];
+        break;
+      case '21':
+        listeTranche = [21];
+        break;
+      case '22':
+        listeTranche = [22];
+        break;
+      case '5':
+        listeTranche = [31, 32];
+        break;
+      case '6':
+        listeTranche = [41, 42, 51, 52, 53];
     }
     return listeTranche;
   }

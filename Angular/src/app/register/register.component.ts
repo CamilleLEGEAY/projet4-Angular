@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginComponent } from '../login/login.component';
 import { LoginService } from '../common/service/login.service';
 import { Login } from '../common/data/login';
 import { LoginResponse } from '../common/data/login-response';
