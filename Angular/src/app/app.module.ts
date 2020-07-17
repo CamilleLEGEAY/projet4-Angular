@@ -19,6 +19,7 @@ import { MyAuthInterceptor } from './common/interceptor/my-auth-interceptor';
 import { RegisterComponent } from './register/register.component';
 import { MyaccountComponent } from './myaccount/myaccount.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PageAccueilComponent } from './page-accueil/page-accueil.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     PageLegalComponent,
     LoginComponent,
     RegisterComponent,
-    MyaccountComponent
+    MyaccountComponent,
+    PageAccueilComponent
   ],
   imports: [
     BrowserModule,

@@ -5,7 +5,7 @@ import { LoginResponse } from '../data/login-response';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LoginUpdate } from '../data/login-update';
-import { Proxy } from '../dao/proxy';
+import { UriProxyService } from '../dao/uri-proxy.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +13,8 @@ import { Proxy } from '../dao/proxy';
 export class LoginService {
 
   private _headers = new HttpHeaders({'Content-Type': 'application/json'});
-  private proxy : Proxy = new Proxy();
   
-  constructor(private http : HttpClient) { }
+  constructor(private http : HttpClient, private proxy : UriProxyService) { }
 
   /**
    * to register a new user
@@ -23,7 +22,8 @@ export class LoginService {
    */
   public postRegister(login: Login): Observable<LoginResponse>{
     let url= this.proxy.msLogin+"/public/newUser";
-    //NB: map() transforme et tap() declenche un traitement en plus sans transformer
+    //let url= "/msLogin/public/newUser";
+    console.log(url);
     return this.http.post<LoginResponse>(url,login, {headers: this._headers} )
            .pipe(
                tap((loginResponse)=>{ console.log(loginResponse.token); this.sauvegarderJeton(loginResponse);})
@@ -35,8 +35,9 @@ export class LoginService {
    * @param login 
    */
   public postLogin(login: Login): Observable<LoginResponse>{
-     let url=this.proxy.msLogin+"/public/login";
-     //NB: map() transforme et tap() declenche un traitement en plus sans transformer
+     let url=this.proxy.msLogin+"/msLogin/public/login";
+     //let url="/msLogin/public/login";
+     console.log(url);
      return this.http.post<LoginResponse>(url,login, {headers: this._headers} )
             .pipe(
                 tap((loginResponse)=>{ this.sauvegarderJeton(loginResponse);})
@@ -48,9 +49,8 @@ export class LoginService {
    * @param loginUpdate 
    */
   public postUpdate(loginUpdate: LoginUpdate): Observable<String>{
-    let url=this.proxy.msLogin+"/updateUser"; //sera préfixé par http://localhost:8282
-    //via l'option --proxy-config proxy.conf.json de ng serve
-    //NB: map() transforme et tap() declenche un traitement en plus sans transformer
+    let url=this.proxy.msLogin+"/msLogin/updateUser";
+    //let url="/msLogin/updateUser";
     return this.http.put<String>(url,loginUpdate, {headers: this._headers} )
   }
 
@@ -59,8 +59,8 @@ export class LoginService {
    * @param login 
    */
   public postDelete(): Observable<LoginResponse>{
-    let url=this.proxy.msLogin+"/supprUser/"+sessionStorage.getItem('token').trim();
-    //NB: map() transforme et tap() declenche un traitement en plus sans transformer
+    let url=this.proxy.msLogin+"/msLogin/supprUser/"+sessionStorage.getItem('token').trim();
+    //let url="/msLogin/supprUser/"+sessionStorage.getItem('token').trim();
     return this.http.delete<LoginResponse>(url, {headers: this._headers} )
     .pipe(
       tap((loginResponse)=>{ sessionStorage.setItem('token',loginResponse.token);})
@@ -76,7 +76,6 @@ export class LoginService {
          sessionStorage.setItem('token',` ${loginResponse.token}`);
        }
        else {
-        // loginResponse.message = "Erreur d'autentification";
          console.log(loginResponse.message)};
   }
 

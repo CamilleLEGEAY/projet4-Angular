@@ -1,11 +1,11 @@
-import { EtablissementEntrant } from '../data/etablissement-entrant';
-import { Etablissement } from '../data/etablissement';
 import { TrancheEffectif } from '../data/tranche-effectif';
+import { EtablissementEntrant } from '../data/etablissement-entrant';
 import { UniteLegaleEntrant } from '../data/unite-legale-entrant';
+import { Etablissement } from '../data/etablissement';
 
-export class Builder {
+export class Builder{
 
-    /**
+      /**
      * can sand an empty object if denomination = null
      * @param EtablissementEntrant
      * @returns Etablissement
@@ -38,28 +38,6 @@ export class Builder {
         return sortant;
     }
 
-    /**
-     * @param UniteLegaleEntrant
-     * @returns UniteLegaleSortant
-     */
-    /* public uniteLegaleEntrantToSortant(entrant: UniteLegaleEntrant): UniteLegaleSortant {
-         var sortant: UniteLegaleSortant = new UniteLegaleSortant;
-         sortant.denomination = this.findDenominationUniteLegale(entrant);
-         if (sortant.denomination = null) {
-             return sortant;
-         }
-         sortant.siren = entrant.siren;
-         sortant.date_creation = this.findCreationUniteLegale(entrant);
-         sortant.identifiant_association = entrant.identifiant_association;
-         sortant.effectifs = TrancheEffectif[this.findEffectif(entrant.tranche_effectifs)];
-         sortant.categorie_entreprise = entrant.categorie_entreprise;
-         sortant.etat_administratif = entrant.etat_administratif;
-         sortant.activite_principale = entrant.activite_principale;
-         sortant.caractere_employeur = entrant.caractere_employeur;
-         sortant.etablissement_siege = this.etablissementEntrantToSortant(entrant.etablissement_siege);
-         sortant.etablissements = this.arrayEtablissementBuilder(entrant.etablissements);
-         return sortant;
-     }*/
     /**
      * @param listeEtablissementEntrant
      * @returns listeEtablissementSortant 
@@ -130,16 +108,6 @@ export class Builder {
         }
         return activite;
     }
-
-    /*private findCreationUniteLegale(entrant: UniteLegaleEntrant): Date {
-        var date: Date;
-        if (entrant.date_creation != null) {
-            date = entrant.date_creation;
-        } else {
-            date = entrant.date_debut;
-        }
-        return date;
-    }*/
 
     private findEffectif(tranche: string): number {
         let code_effectif: number;

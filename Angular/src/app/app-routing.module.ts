@@ -7,17 +7,19 @@ import { PageLegalComponent } from './page-legal/page-legal.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { MyaccountComponent } from './myaccount/myaccount.component';
+import { PageAccueilComponent } from './page-accueil/page-accueil.component';
 
 
 
 const routes: Routes = [
   { path: 'pageabout', component: PageAboutComponent },
-  { path: '', redirectTo: '/pageresultat', pathMatch: 'full'},
+  { path: '', redirectTo: '/accueil', pathMatch: 'full'},
   { path: 'pageme', component: PageMeComponent },
   { path: 'pageresultat', component: PageResultatComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'myaccount', component: MyaccountComponent },
+  { path: 'accueil', component: PageAccueilComponent },
   { path: 'pagelegal', component: PageLegalComponent }
 ];
 

@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { RecherchesService, urlEtablissement } from '../common/service/recherches.service';
+import { RecherchesService } from '../common/service/recherches.service';
 import { Etablissement } from '../common/data/etablissement';
 import { ExportDataService } from '../common/service/export-data.service';
 import { Builder } from '../common/dao/builder';
 import { Recherche } from '../common/data/recherche';
 import { ReponseApiEtablissements } from '../common/data/reponses-api';
 import { forkJoin } from 'rxjs';
+import { UriProxyService } from '../common/dao/uri-proxy.service';
+import { EtablissementEntrant } from '../common/data/etablissement-entrant';
 
 @Component({
   selector: 'app-page-resultat',
@@ -17,37 +19,19 @@ export class PageResultatComponent implements OnInit {
   //for front
   shownEtablissement: Etablissement[];
   recherche: Recherche = new Recherche();
-  nbResultat: number;
+  nbResultat: number = null;
   departements: any[];
   listeCP: any[];
 
   //local
   builder: Builder = new Builder();
   reponseAPIconcat: ReponseApiEtablissements = new ReponseApiEtablissements();
-  allEtablissement: Etablissement[] = [];
-  observableBatch = [];
 
-  constructor(private recherchesService: RecherchesService, private exportData: ExportDataService) {
-    //this.start();
+  constructor(private recherchesService: RecherchesService, private exportData: ExportDataService, private proxy: UriProxyService) {
     this.initDepartements();
   }
 
   ngOnInit(): void {
-  }
-
-  start(): void {
-    this.recherchesService.getPageOne()
-      .subscribe((reponse) => {
-        if (this.shownEtablissement === undefined) {
-          this.shownEtablissement = this.builder.arrayEtablissementBuilder(reponse.etablissements);
-          this.nbResultat = reponse.meta.total_results;
-          console.log("liste par défaut chargé");
-        }
-      },
-        (err) => {
-          console.log(err);
-        }
-      )
   }
 
   /**
@@ -79,14 +63,22 @@ export class PageResultatComponent implements OnInit {
         }
       )
   }
+  
+  onSaveResearch(){
+    console.log(this.nbResultat);
+    this.recherche.nb_resultats=this.nbResultat;
+    this.recherchesService.postSearch(this.recherche).subscribe(
+      (data)=>{console.log()}
+    )
+  }
 
   /**
    * to get every data of the research to produce the Excel fill
    */
-  async onCreateExcel() {
+  onCreateExcel() {
     console.log("extraction started");
     this.reponseAPIconcat = new ReponseApiEtablissements();
-    let url = urlEtablissement + "&per_page=100";
+    let url = this.proxy.urlEtablissement + "&per_page=100";
     url = this.urlLevelOne(this.recherche, url);
 
     if (this.recherche.effectifs != null) {
@@ -124,7 +116,7 @@ export class PageResultatComponent implements OnInit {
         this.doSearchAndPrint(page, url)
       }
       if (this.reponseAPIconcat.etablissements.length === this.nbResultat) {
-        this.print();
+        this.print(this.reponseAPIconcat.etablissements);
       }
     },
       (err) => { console.log(err); });
@@ -132,10 +124,10 @@ export class PageResultatComponent implements OnInit {
   /**
    * print this.reponseAPIcancat.etablissement
    */
-  private print(){
-    this.allEtablissement = this.builder.arrayEtablissementBuilder(this.reponseAPIconcat.etablissements);
-    console.log("on va imprimer les " + this.allEtablissement.length + " entreprises");
-    this.exportData.exportAsExcelFile(this.allEtablissement, "RLEF");
+  private print(listeEtablissement : EtablissementEntrant[]){
+    let allEtablissement = this.builder.arrayEtablissementBuilder(listeEtablissement);
+    console.log("on va imprimer les " + allEtablissement.length + " entreprises");
+    this.exportData.exportAsExcelFile(allEtablissement, "RLEF");
   }
 
 
@@ -143,10 +135,10 @@ export class PageResultatComponent implements OnInit {
   /**
    * to know how many responses for a research and get first page
    */
-  async onRecherche() {
+  onRecherche() {
     this.nbResultat = null;
     console.log(this.recherche);
-    let url = urlEtablissement + "&per_page=20&page=1";
+    let url = this.proxy.urlEtablissement + "&per_page=20&page=1";
     url = this.urlLevelOne(this.recherche, url);
 
     if (this.recherche.effectifs != null) {
@@ -168,14 +160,14 @@ export class PageResultatComponent implements OnInit {
    * @param url 
    */
   private async searchWithEffectif(effectif: number, url: string) {
-    this.observableBatch = [];
+    let observableBatch = [];
     this.reponseAPIconcat = new ReponseApiEtablissements();
     let listeTranche = this.listeTrancheEffectif(effectif);
     for (let tranche of listeTranche) {
       let urlLastLevel = url + "&tranche_effectifs=" + tranche;
-      this.observableBatch.push(this.recherchesService.doSearch(urlLastLevel))
+      observableBatch.push(this.recherchesService.doSearch(urlLastLevel))
     }
-    forkJoin<ReponseApiEtablissements>(this.observableBatch).subscribe((reponse) => {
+    forkJoin<ReponseApiEtablissements>(observableBatch).subscribe((reponse) => {
       for (let rep of reponse) {
         this.reponseAPIconcat.meta.total_results = this.reponseAPIconcat.meta.total_results + rep.meta.total_results;
         this.reponseAPIconcat.etablissements = rep.etablissements;

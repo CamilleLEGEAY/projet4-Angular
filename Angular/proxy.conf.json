@@ -2,7 +2,7 @@
     "/msLogin" : { "secure" : "false" ,
                     "target" : "http://localhost:9999" },
     "/msStats" : { "secure" : "false" ,
-                    "target" : "http://localhost:9998" },
-    "/msCP" : { "secure" : "false" ,
-                    "target" : "http://localhost:9997" }                    
+                    "target" : "http://localhost:9996" },
+    "/msSauvegarde" : { "secure" : "false" ,
+                    "target" : "http://localhost:9995" }                    
    }
