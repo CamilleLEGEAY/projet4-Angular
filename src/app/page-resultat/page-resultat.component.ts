@@ -6,7 +6,7 @@ import { Builder } from '../common/dao/builder';
 import { Recherche } from '../common/data/recherche';
 import { ReponseApiEtablissements } from '../common/data/reponses-api';
 import { forkJoin } from 'rxjs';
-import { UriProxyService } from '../common/dao/uri-proxy.service';
+import { environment } from 'src/environments/environment';
 import { EtablissementEntrant } from '../common/data/etablissement-entrant';
 
 @Component({
@@ -27,7 +27,7 @@ export class PageResultatComponent implements OnInit {
   builder: Builder = new Builder();
   reponseAPIconcat: ReponseApiEtablissements = new ReponseApiEtablissements();
 
-  constructor(private recherchesService: RecherchesService, private exportData: ExportDataService, private proxy: UriProxyService) {
+  constructor(private recherchesService: RecherchesService, private exportData: ExportDataService) {
     this.initDepartements();
   }
 
@@ -78,7 +78,7 @@ export class PageResultatComponent implements OnInit {
   onCreateExcel() {
     console.log("extraction started");
     this.reponseAPIconcat = new ReponseApiEtablissements();
-    let url = this.proxy.urlEtablissement + "&per_page=100";
+    let url = environment.urlEtablissement + "&per_page=100";
     url = this.urlLevelOne(this.recherche, url);
 
     if (this.recherche.effectifs != null) {
@@ -138,7 +138,7 @@ export class PageResultatComponent implements OnInit {
   onRecherche() {
     this.nbResultat = null;
     console.log(this.recherche);
-    let url = this.proxy.urlEtablissement + "&per_page=20&page=1";
+    let url = environment.urlEtablissement + "&per_page=20&page=1";
     url = this.urlLevelOne(this.recherche, url);
 
     if (this.recherche.effectifs != null) {

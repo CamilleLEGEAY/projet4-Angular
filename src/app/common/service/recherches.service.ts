@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { ReponseApiEtablissements } from '../data/reponses-api';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { Recherche, RechercheToSave } from '../data/recherche';
-import { UriProxyService } from '../dao/uri-proxy.service';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -15,20 +15,20 @@ export class RecherchesService {
 
   private _headers = new HttpHeaders({'Content-Type': 'application/json'});
 
-  constructor(private http: HttpClient, private proxy : UriProxyService) { }
+  constructor(private http: HttpClient) { }
 
   /**
    * recupère la liste des départements de France
    */
   initDepartements(): Observable<any> {
-    let url = this.proxy.urlDepartement;
+    let url = environment.urlDepartement;
     return this.http.get<any>(url);
   }
   /**
    * fait une liste des codes postaux du departement
    */
   initCP(departement: string): Observable<any[]> {
-    let url = this.proxy.urlDepartement + departement + "/communes";
+    let url = environment.urlDepartement + departement + "/communes";
     return this.http.get<any[]>(url);
   }
   /**
@@ -41,7 +41,7 @@ export class RecherchesService {
   }
 
   postSearch(recherche:Recherche): Observable<String>{
-    let url = this.proxy.msSauvegarde+"/msSauvegarde/public/SaveRecherche";
+    let url = environment.msSauvegarde+"/msSauvegarde/public/SaveRecherche";
     //let url = "/msSauvegarde/public/SaveRecherche";
     let rechercheToSave: RechercheToSave = new RechercheToSave();
     rechercheToSave.recherche= recherche ;
