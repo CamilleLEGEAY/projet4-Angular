@@ -163,7 +163,7 @@ export class PageResultatComponent implements OnInit {
     let observableBatch = [];
     this.reponseAPIconcat = new ReponseApiEtablissements();
     let listeTranche = this.listeTrancheEffectif(effectif);
-    for (let tranche of listeTranche) {
+    for (let tranche of listeTranche) { 
       let urlLastLevel = url + "&tranche_effectifs=" + tranche;
       observableBatch.push(this.recherchesService.doSearch(urlLastLevel))
     }
