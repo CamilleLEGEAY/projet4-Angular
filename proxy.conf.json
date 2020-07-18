@@ -2,7 +2,8 @@
     "/msLogin" : { "secure" : "false" ,
                     "target" : "http://localhost:9999" },
     "https://msstats.herokuapp.com" : { "secure" : "false" ,
+                    "changeOrigine":true,
                     "target" : "https://msstats.herokuapp.com" },
-    "/msSauvegarde" : { "secure" : "false" ,
-                    "target" : "http://localhost:9995" }                    
+    "http://localhost:9996" : { "secure" : "false" ,
+                    "target" : "http://localhost:9996" }                    
    }

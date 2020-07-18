@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const cors = require('cors'); 
+const cors = require('cors'); //<-- required installing 'cors' (npm i cors --save)
 app.use(cors());
 
 app.use(express.static('./dist/projet4-angular'));
