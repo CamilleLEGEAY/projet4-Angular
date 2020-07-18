@@ -1,9 +1,12 @@
 const express = require('express');
 const app = express();
 
-app.use(express.static(__dirname+'./dist/projet4-angular'));
+const cors = require('cors'); 
+app.use(cors());
+
+app.use(express.static('./dist/projet4-angular'));
 app.get('/*', function(req, res) {
-    res.sendFile(path.join(__dirname+'/dist/projet4-angular/'));
+    res.sendFile('index.html', {root: 'dist/projet4-angular/'});
   });
 
 app.listen(process.env.PORT || 8080);
