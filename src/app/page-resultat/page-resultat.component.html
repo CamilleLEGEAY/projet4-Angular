@@ -1,142 +1,113 @@
 <section class="page-section bg-light" id="zoneResultat">
     <div class="container col-sm-7">
         <div id="titre" class="text-center">
-            <h2 class="section-heading text-uppercase">Entreprises</h2>
+            <br />
+            <br />
+            <h2 class="section-heading text-uppercase">Critères de recherche</h2>
+            <br />
+            <br />
         </div>
         <div id="recherche" class="text-center">
             <form #formLogin="ngForm" class="form-horizontal">
 
 
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                      <h5 class="mb-0">
-                        <button class="btn btn-link col-sm-12" style="text-align: center;" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Localisation
-                        </button>
-                      </h5>
-                    </div>
-                
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                      <div class="card-body">
-                        <div class="form-group row">
-                            <select id="departement" name="departement" [(ngModel)]="recherche.departement"
-                                class="form-control">
-                                <option *ngFor="let dept of departements" [value]="dept.code">{{dept.code}} -
-                                    {{dept.nom}} </option>
-                            </select>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-4">code postal : </label>
-                            <div class="col-sm-8">
-                                <input type="text" [(ngModel)]="recherche.code_postal" name="code_postal"
-                                    pattern="[0-9]{5}" />
+                <ngb-accordion [closeOthers]="true" activeIds="localisation">
+                    <ngb-panel id="localisation" title="Lacalisation">
+                        <ng-template ngbPanelContent>
+                            <div class="form-group row">
+                                <select id="departement" name="departement" [(ngModel)]="recherche.departement"
+                                    class="form-control">
+                                    <option *ngFor="let dept of departements" [value]="dept.code">{{dept.code}} -
+                                        {{dept.nom}} </option>
+                                </select>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-4">ville : </label>
-                            <div class="col-sm-8">
-                                <input type="text" [(ngModel)]="recherche.libelle_commune" name="libelle_commune" />
+                            <div class="form-group row">
+                                <label class="col-sm-4">code postal : </label>
+                                <div class="col-sm-8">
+                                    <input type="text" [(ngModel)]="recherche.code_postal" name="code_postal"
+                                        pattern="[0-9]{5}" />
+                                </div>
                             </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-                  <div class="card">
-                    <div class="card-header" id="headingTwo">
-                      <h5 class="mb-0">
-                        <button class="btn btn-link collapsed col-sm-12" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Secteur d'activité
-                        </button>
-                      </h5>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                      <div class="card-body">
-                        <div class="form-group row">
-                            <label class="col-sm-4">code NAF / APE : </label>
-                            <div class="col-sm-8">
-                                <input type="text" [(ngModel)]="recherche.activite_principale"
-                                    name="activite_principale" pattern="[0-9]{2}.[0-9]{2}[A-Z]{1}" />
+                            <div class="form-group row">
+                                <label class="col-sm-4">ville : </label>
+                                <div class="col-sm-8">
+                                    <input type="text" [(ngModel)]="recherche.libelle_commune" name="libelle_commune" />
+                                </div>
                             </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                        </ng-template>
+                    </ngb-panel>
 
-
-                  <div class="card">
-                    <div class="card-header" id="headingThree">
-                      <h5 class="mb-0">
-                        <button class="btn btn-link collapsed col-sm-12" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            Effectif
-                        </button>
-                      </h5>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                      <div class="card-body">
-                        <div class="form-group row">
-                            <select id="effectif" name="tranche_effectif" [(ngModel)]="recherche.effectifs"
-                                class="form-control">
-                                <option value="1"> 0 à 9 salariés</option>
-                                <option value="11"> 10 à 19 salariés</option>
-                                <option value="12"> 20 à 49 salariés</option>
-                                <option value="21"> 50 à 99 salariés</option>
-                                <option value="22"> 100 à 199 salariés</option>
-                                <option value="5"> 201 à 500 salariés</option>
-                                <option value="6"> plus de 500 salariés</option>
-                            </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-     
-                  <div class="card">
-                    <div class="card-header" id="headingFour">
-                      <h5 class="mb-0">
-                        <button class="btn btn-link collapsed col-sm-12" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            Date de Creation
-                        </button>
-                      </h5>
-                    </div>
-                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-                      <div class="card-body">
-                        <div class="form-group row">
-                            <label class="col-sm-4">date de création : </label>
-                            <div class="col-sm-8">
-                                <input type="text" [(ngModel)]="recherche.date_creation" name="date_creation"
-                                    pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" />
+                    <ngb-panel id="activite" title="Secteur d'activité">
+                        <ng-template ngbPanelContent>
+                            <div class="form-group row">
+                                <label class="col-sm-4">code NAF / APE : </label>
+                                <div class="col-sm-8">
+                                    <input type="text" [(ngModel)]="recherche.activite_principale"
+                                        name="activite_principale" pattern="[0-9]{2}.[0-9]{2}[A-Z]{1}" />
+                                </div>
                             </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
 
 
 
+                        </ng-template>
+                    </ngb-panel>
+                    <ngb-panel id="effectif" title="Effectif">
+                        <ng-template ngbPanelContent>
+
+                            <div class="form-group row">
+                                <select id="effectif" name="tranche_effectif" [(ngModel)]="recherche.effectifs"
+                                    class="form-control">
+                                    <option value="1"> 0 à 9 salariés</option>
+                                    <option value="11"> 10 à 19 salariés</option>
+                                    <option value="12"> 20 à 49 salariés</option>
+                                    <option value="21"> 50 à 99 salariés</option>
+                                    <option value="22"> 100 à 199 salariés</option>
+                                    <option value="5"> 201 à 500 salariés</option>
+                                    <option value="6"> plus de 500 salariés</option>
+                                </select>
+                            </div>
+
+                        </ng-template>
+                    </ngb-panel>
+                    <ngb-panel id="creation" title="Date de Creation">
+                        <ng-template ngbPanelContent>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4">date de création : </label>
+                                <div class="col-sm-8">
+                                    <input type="text" [(ngModel)]="recherche.date_creation" name="date_creation"
+                                        pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" />
+                                </div>
+                            </div>
+
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
 
                 <div class="form-group row">
-                    <div class="col-sm-8 offset-sm-4">
-                        <input type="button" [disabled]="!formLogin.form.valid" class="btn btn-primary" value="Chercher"
-                            (click)="onRecherche()" />
-                        <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+                    <div class="col-sm-7 offset-sm-7">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input style="width: 200px;" type="button" [disabled]="!formLogin.form.valid" mdbBtn color="default"
+                            class="waves-light" mdbWavesEffect value="Chercher" (click)="onRecherche()" />
                     </div>
                 </div>
             </form>
         </div>
         <br />
         <br />
-        <br />
-        <div>RESULTATS DE LA RECHERCHE : {{nbResultat}}</div>
-        <br />
-        <br />
+        <h4 class="text-uppercase">Résultats de la recherche : {{nbResultat}}</h4>
         <br />
         <div>
-            <input type='button' id="btnExp" value='Export Excel' (click)="onCreateExcel()"
-                [disabled]="nbResultat>2000 && 1>nbResultat"  /> <br />
-            <input type='button' id="btnSave" value='Sauvegarder la recherche' (click)="onSaveResearch()"
-                [disabled]="recherche==null" /> <br />
+            <button type='button' id="btnExp" value='Export Excel' mdbBtn color="default" class="waves-light"
+                mdbWavesEffect style="width: 250px;" (click)="onCreateExcel()" [disabled]="nbResultat>10000">
+                <mdb-icon far icon="file-excel" size="2x"></mdb-icon><br />
+                <label>Exporter en Excel</label>
+            </button>&nbsp;&nbsp;&nbsp;
+            <button type='button' id="btnSave" value='Save' mdbBtn color="default" class="waves-light" mdbWavesEffect
+                style="width: 250px;" (click)="onSaveResearch()" [disabled]="!loginService.logged">
+                <mdb-icon far icon="save" size="2x"></mdb-icon> <br />
+                <label>Sauvegarder la recherche</label>
+            </button>
         </div>
         <br />
         <br />

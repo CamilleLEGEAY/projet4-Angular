@@ -10,13 +10,13 @@ import { FormsModule } from '@angular/forms';
 import { PageAccueilComponent } from './page-accueil/page-accueil.component';
 import { MyaccountComponent } from './myaccount/myaccount.component';
 import { PageLegalComponent } from './page-legal/page-legal.component';
-import { PageMeComponent } from './page-me/page-me.component';
 import { PageAboutComponent } from './page-about/page-about.component';
 import { PageResultatComponent } from './page-resultat/page-resultat.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MyAuthInterceptor } from './common/interceptor/my-auth-interceptor';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,6 @@ import { MyAuthInterceptor } from './common/interceptor/my-auth-interceptor';
     FooterComponent,
     PageResultatComponent,
     PageAboutComponent,
-    PageMeComponent,
     PageLegalComponent,
     MyaccountComponent,
     PageAccueilComponent
@@ -37,7 +36,8 @@ import { MyAuthInterceptor } from './common/interceptor/my-auth-interceptor';
     FormsModule,
     BrowserModule,
     AppRoutingModule ,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
