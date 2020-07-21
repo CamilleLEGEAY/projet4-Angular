@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { MyAuthInterceptor } from './common/interceptor/my-auth-interceptor';
 import { FooterComponent } from './footer/footer.component';
+import { PageAboutComponent } from './page-about/page-about.component';
+import { PageLegalComponent } from './page-legal/page-legal.component';
 
 @NgModule({
   declarations: [
@@ -16,10 +18,10 @@ import { FooterComponent } from './footer/footer.component';
     HeaderComponent,
     FooterComponent,
     //PageResultatComponent,
-    //PageAboutComponent,
-    //PageLegalComponent,
     //MyaccountComponent,
-    //PageAccueilComponent
+    PageAboutComponent,
+    PageLegalComponent,
+    PageAboutComponent
   ],
   imports: [
     BrowserModule,
