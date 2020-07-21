@@ -10,7 +10,7 @@ stages:
 deploy:
   stage: deploy
   environment:
-    name: development
+    name: URL
   script:
     - npm install
     - npm run builddev
