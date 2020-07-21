@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('projet4-Angular app is running!');
+    expect(page.getTitleText()).toEqual('Welcome to mdb-angular-free!');
   });
 
   afterEach(async () => {

@@ -1,8 +1,11 @@
-<p>page-resultat works!</p>
 <section class="page-section bg-light" id="zoneResultat">
     <div class="container col-sm-7">
         <div id="titre" class="text-center">
-            <h2 class="section-heading text-uppercase">Entreprises</h2>
+            <br />
+            <br />
+            <h2 class="section-heading text-uppercase">Critères de recherche</h2>
+            <br />
+            <br />
         </div>
         <div id="recherche" class="text-center">
             <form #formLogin="ngForm" class="form-horizontal">
@@ -82,26 +85,29 @@
                 </ngb-accordion>
 
                 <div class="form-group row">
-                    <div class="col-sm-8 offset-sm-4">
-                        <input type="button" [disabled]="!formLogin.form.valid" class="btn btn-primary" value="Chercher"
-                            (click)="onRecherche()" />
-                        <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+                    <div class="col-sm-7 offset-sm-7">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input style="width: 200px;" type="button" [disabled]="!formLogin.form.valid" mdbBtn color="default"
+                            class="waves-light" mdbWavesEffect value="Chercher" (click)="onRecherche()" />
                     </div>
                 </div>
             </form>
         </div>
         <br />
         <br />
-        <br />
-        <div>RESULTATS DE LA RECHERCHE : {{nbResultat}}</div>
-        <br />
-        <br />
+        <h4 class="text-uppercase">Résultats de la recherche : {{nbResultat}}</h4>
         <br />
         <div>
-            <input type='button' id="btnExp" value='Export Excel' (click)="onCreateExcel()"
-                [disabled]="nbResultat>2000 && 1>nbResultat"  /> <br />
-            <input type='button' id="btnSave" value='Sauvegarder la recherche' (click)="onSaveResearch()"
-                [disabled]="recherche==null" /> <br />
+            <button type='button' id="btnExp" value='Export Excel' mdbBtn color="default" class="waves-light"
+                mdbWavesEffect style="width: 250px;" (click)="onCreateExcel()" [disabled]="nbResultat>10000">
+                <mdb-icon far icon="file-excel" size="2x"></mdb-icon><br />
+                <label>Exporter en Excel</label>
+            </button>&nbsp;&nbsp;&nbsp;
+            <button type='button' id="btnSave" value='Save' mdbBtn color="default" class="waves-light" mdbWavesEffect
+                style="width: 250px;" (click)="onSaveResearch()" [disabled]="!loginService.logged">
+                <mdb-icon far icon="save" size="2x"></mdb-icon> <br />
+                <label>Sauvegarder la recherche</label>
+            </button>
         </div>
         <br />
         <br />
