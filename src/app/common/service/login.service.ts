@@ -87,6 +87,7 @@ export class LoginService {
   private sauvegarderJeton(loginResponse:LoginResponse){
        if(loginResponse.token!=null){
          sessionStorage.setItem('token',` ${loginResponse.token}`);
+         sessionStorage.setItem('user',` ${loginResponse.username}`);
        }
        else {
          console.log(loginResponse.message)};

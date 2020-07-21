@@ -11,14 +11,16 @@ import { MyAuthInterceptor } from './common/interceptor/my-auth-interceptor';
 import { FooterComponent } from './footer/footer.component';
 import { PageAboutComponent } from './page-about/page-about.component';
 import { PageLegalComponent } from './page-legal/page-legal.component';
+import { PageResultatComponent } from './page-resultat/page-resultat.component';
+import { MyaccountComponent } from './myaccount/myaccount.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    //PageResultatComponent,
-    //MyaccountComponent,
+    PageResultatComponent,
+    MyaccountComponent,
     PageAboutComponent,
     PageLegalComponent,
     PageAboutComponent

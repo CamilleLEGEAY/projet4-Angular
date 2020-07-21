@@ -4,14 +4,16 @@ import { CommonModule } from '@angular/common';
 import { PageAccueilComponent } from './page-accueil/page-accueil.component';
 import { PageAboutComponent } from './page-about/page-about.component';
 import { PageLegalComponent } from './page-legal/page-legal.component';
+import { MyaccountComponent } from './myaccount/myaccount.component';
+import { PageResultatComponent } from './page-resultat/page-resultat.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/accueil', pathMatch: 'full'},
   { path: 'accueil', component: PageAccueilComponent },
   { path: 'pageabout', component: PageAboutComponent },
-  //{ path: 'myaccount', component: MyaccountComponent },
-  //{ path: 'pageresultat', component: PageResultatComponent },
+  { path: 'myaccount', component: MyaccountComponent },
+  { path: 'pageresultat', component: PageResultatComponent },
   { path: 'pagelegal', component: PageLegalComponent }
 ];
 
