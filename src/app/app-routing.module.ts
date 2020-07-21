@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { PageAboutComponent } from './page-about/page-about.component';
 import { PageResultatComponent } from './page-resultat/page-resultat.component';
-import { MyaccountComponent } from './myaccount/myaccount.component';
 import { PageLegalComponent } from './page-legal/page-legal.component';
+import { MyaccountComponent } from './myaccount/myaccount.component';
 import { PageAccueilComponent } from './page-accueil/page-accueil.component';
+
+
 
 const routes: Routes = [
   { path: 'pageabout', component: PageAboutComponent },
@@ -17,10 +18,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forRoot(routes)
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

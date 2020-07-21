@@ -1,22 +1,20 @@
-
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { FormsModule } from '@angular/forms';
-import { PageAccueilComponent } from './page-accueil/page-accueil.component';
-import { MyaccountComponent } from './myaccount/myaccount.component';
-import { PageLegalComponent } from './page-legal/page-legal.component';
-import { PageAboutComponent } from './page-about/page-about.component';
-import { PageResultatComponent } from './page-resultat/page-resultat.component';
-import { FooterComponent } from './footer/footer.component';
+import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
+import { PageResultatComponent } from './page-resultat/page-resultat.component';
+import { PageAboutComponent } from './page-about/page-about.component';
+import { PageLegalComponent } from './page-legal/page-legal.component';
+import { FormsModule } from '@angular/forms';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MyAuthInterceptor } from './common/interceptor/my-auth-interceptor';
+import { MyaccountComponent } from './myaccount/myaccount.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PageAccueilComponent } from './page-accueil/page-accueil.component';
 
 @NgModule({
   declarations: [
@@ -31,11 +29,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
-    MDBBootstrapModule.forRoot(),
-    FormsModule,
-    BrowserModule,
     AppRoutingModule ,
+    FormsModule,
+    TabsModule.forRoot(),
     HttpClientModule,
     NgbModule
   ],

@@ -12,8 +12,6 @@ import { environment } from 'src/environments/environment';
 })
 export class LoginService {
 
-  logged:boolean = false;
-
   private _headers = new HttpHeaders({'Content-Type': 'application/json'});
   
   constructor(private http : HttpClient) { }
@@ -28,11 +26,7 @@ export class LoginService {
     console.log(url);
     return this.http.post<LoginResponse>(url,login, {headers: this._headers} )
            .pipe(
-               tap((loginResponse)=>{ 
-                 console.log(loginResponse.token);
-                 this.sauvegarderJeton(loginResponse);
-                 this.logged=true;
-                })
+               tap((loginResponse)=>{ console.log(loginResponse.token); this.sauvegarderJeton(loginResponse);})
            );
  }
 
@@ -46,10 +40,7 @@ export class LoginService {
      console.log(url);
      return this.http.post<LoginResponse>(url,login, {headers: this._headers} )
             .pipe(
-                tap((loginResponse)=>{ 
-                  this.sauvegarderJeton(loginResponse);
-                  this.logged=true;
-                })
+                tap((loginResponse)=>{ this.sauvegarderJeton(loginResponse);})
             );
   }
 
@@ -72,11 +63,7 @@ export class LoginService {
     //let url="/msLogin/supprUser/"+sessionStorage.getItem('token').trim();
     return this.http.delete<LoginResponse>(url, {headers: this._headers} )
     .pipe(
-      tap((loginResponse)=>{ 
-        sessionStorage.setItem('token',loginResponse.token);
-        this.logged=false;
-        
-      })
+      tap((loginResponse)=>{ sessionStorage.setItem('token',loginResponse.token);})
     );
   }
 

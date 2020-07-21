@@ -8,7 +8,6 @@ import { ReponseApiEtablissements } from '../common/data/reponses-api';
 import { forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { EtablissementEntrant } from '../common/data/etablissement-entrant';
-import { LoginService } from '../common/service/login.service';
 
 @Component({
   selector: 'app-page-resultat',
@@ -28,7 +27,7 @@ export class PageResultatComponent implements OnInit {
   builder: Builder = new Builder();
   reponseAPIconcat: ReponseApiEtablissements = new ReponseApiEtablissements();
 
-  constructor(private recherchesService: RecherchesService, private exportData: ExportDataService,public loginService: LoginService) {
+  constructor(private recherchesService: RecherchesService, private exportData: ExportDataService) {
     this.initDepartements();
   }
 
