@@ -1,0 +1,154 @@
+<!--Navbar-->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark" class="navCss" [containerInside]="false">
+
+    <!-- Navbar brand -->
+    <mdb-navbar-brand><a class="logo navbar-brand" href="/"> <img
+                src="https://camillelegeay.github.io/images/logopetit.png"></a></mdb-navbar-brand>
+
+    <!-- Collapsible content -->
+    <ul class="navbar-nav mr-auto nav-flex-icons">
+        <li class="nav-item">
+            <a class="nav-link waves-light">Constituez vos listings d'entreprises gratuits</a>
+        </li>
+    </ul>
+    <links>
+        <ul class="navbar-nav ml-auto nav-flex-icons">
+            <li class="nav-item">
+                <a class="nav-link ">
+                    <div class="btn-group" mdbDropdown>
+                        <a class="nav-link waves-light" routerLink='/pageresultat' mdbWavesEffect>Recherche</a>
+                        &nbsp;&nbsp;&nbsp;
+                        <mdb-icon fas icon="user-circle" mdbDropdownToggle size="2x"></mdb-icon>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-primary">
+                            <a *ngIf="!loginService.logged" class="dropdown-item" data-toggle="modal"
+                                data-target="#basicExample" (click)="login.show()">Se connecter</a>
+                            <a *ngIf="!loginService.logged" class="dropdown-item" data-toggle="modal"
+                                data-target="#basicExample" (click)="register.show()">Créer un compte</a>
+                            <a *ngIf="loginService.logged" class="dropdown-item" href="#">Mon Compte</a>
+                            <a *ngIf="loginService.logged" class="dropdown-item" href="#">Mes Recherches</a>
+                            <div *ngIf="loginService.logged" class="divider dropdown-divider"></div>
+                            <a *ngIf="loginService.logged" class="dropdown-item" href="#">Déconnexion</a>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </links>
+    <!-- Collapsible content -->
+</mdb-navbar>
+<!--/.Navbar-->
+<!--Modal Register-->
+<div mdbModal #register="mdbModal" class="modal fade left" id="registerModalTop" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Créer un compte</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="register.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <br />
+            <form #formRegister="ngForm" class="form-horizontal">
+                <div class="form-group row">
+                    <label for="usernameRegister" class="col-sm-3 col-form-label text-sm-right">
+                        <mdb-icon fas icon="user" class="prefix"></mdb-icon>
+                    </label>
+                    <div class="col-sm-6">
+                        <input placeholder="Votre prénom" class="form-control" type="text"
+                            [(ngModel)]="loginRegister.username" name="usernameRegister" required maxlength="20"
+                            #usernameRegister="ngModel"
+                            [class.is-invalid]="usernameRegister.invalid && usernameRegister.touched" />
+                        <small class="text-danger"
+                            [class.d-none]="usernameRegister.valid || usernameRegister.untouched">Prénom
+                            invalide. 20 caractère maximum</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label text-sm-right">
+                        <mdb-icon fas icon="envelope" class="prefix"></mdb-icon>
+                    </label>
+                    <div class="col-sm-6">
+                        <input placeholder="Adresse e-mail" class="form-control" type="email"
+                            [(ngModel)]="loginRegister.email" name="emailRegister" required
+                            pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$" #emailRegister="ngModel"
+                            [class.is-invalid]="emailRegister.invalid &&emailRegister.touched" />
+                        <small class="text-danger" [class.d-none]="emailRegister.valid || emailRegister.untouched">Email
+                            requis</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label text-sm-right">
+                        <mdb-icon fas icon="lock" class="prefix"></mdb-icon>
+                    </label>
+                    <div class="col-sm-6">
+                        <input placeholder="Mot de passe" class="form-control" type="password"
+                            [(ngModel)]="loginRegister.password" name="passwordRegister" required
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" #passwordRegister="ngModel"
+                            [class.is-invalid]="passwordRegister.invalid &&passwordRegister.touched" />
+                        <small class="text-danger"
+                            [class.d-none]="passwordRegister.valid || passwordRegister.untouched">Votre mot de passe
+                            doit être composé d'au moins 8 caractères dont : un nombre; une minucule; une
+                            majuscule</small>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" [disabled]="!formRegister.form.valid" mdbBtn color="default" class="waves-light"
+                    mdbWavesEffect value="loginRegister" (click)="onRegister()">Valider</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--./Modal Register-->
+<!--Modal Login-->
+<div mdbModal #login="mdbModal" class="modal fade left" id="loginModalTop" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Connexion</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="login.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <br />
+
+            <form #formLogin="ngForm" class="form-horizontal">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label text-sm-right">
+                        <mdb-icon fas icon="envelope" class="prefix"></mdb-icon>
+                    </label>
+                    <div class="col-sm-6">
+                        <input placeholder="Adresse e-mail" class="form-control" type="email"
+                            [(ngModel)]="loginLogin.email" name="emailLogin" required
+                            pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$" #emailLogin="ngModel"
+                            [class.is-invalid]="emailLogin.invalid && emailLogin.touched" />
+                        <small class="text-danger" [class.d-none]="emailLogin.valid || emailLogin.untouched">Email
+                            requis</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label text-sm-right">
+                        <mdb-icon fas icon="lock" class="prefix"></mdb-icon>
+                    </label>
+                    <div class="col-sm-6">
+                        <input placeholder="Mot de passe" class="form-control" type="password"
+                            [(ngModel)]="loginLogin.password" name="passwordLogin" required #passwordLogin="ngModel"
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+                        <small class="text-danger" [class.d-none]="passwordLogin.valid || passwordLogin.untouched">Votre
+                            mot de passe
+                            doit être composé d'au moins 8 caractères dont : un nombre; une minucule; une
+                            majuscule</small>
+                    </div>
+                </div>
+            </form>
+
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" [disabled]="!formLogin.form.valid" mdbBtn color="default" class="waves-light"
+                    mdbWavesEffect value="loginLogin" (click)="onLogin()">Valider</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--./Modal Login-->
