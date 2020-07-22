@@ -24,10 +24,11 @@ export class LoginService {
    */
   public postRegister(login: Login): Observable<LoginResponse>{
     let url= environment.msLogin+"/msLogin/public/newUser";
-    return this.http.post<LoginResponse>(url,login, {responseType:'text' as 'json'} )
+    return this.http.post<LoginResponse>(url,login, {headers: this._headers} )
            .pipe(
                tap((loginResponse)=>{ 
                  this.sauvegarderJeton(loginResponse);
+                 console.log(JSON.stringify(loginResponse));
                  this.logged=true;
                 })
            );
@@ -39,7 +40,7 @@ export class LoginService {
    */
   public postLogin(login: Login): Observable<LoginResponse>{
      let url=environment.msLogin+"/msLogin/public/login";
-     return this.http.post<LoginResponse>(url,login, {responseType:'text' as 'json'} )
+     return this.http.post<LoginResponse>(url,login, {headers: this._headers} )
             .pipe(
                 tap((loginResponse)=>{ 
                   this.sauvegarderJeton(loginResponse);
@@ -54,7 +55,7 @@ export class LoginService {
    */
   public postUpdate(loginUpdate: LoginUpdate): Observable<String>{
     let url=environment.msLogin+"/msLogin/updateUser";
-    return this.http.put<String>(url,loginUpdate, {responseType:'text' as 'json'} )
+    return this.http.put<String>(url,loginUpdate, {headers: this._headers} )
   }
 
   /**

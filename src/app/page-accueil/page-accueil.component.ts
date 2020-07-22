@@ -19,7 +19,7 @@ export class PageAccueilComponent implements OnInit {
 
   initYesterday(){
     this.statsService.initYesterday().subscribe(
-      (data)=>{this.shownStat=data}
+      (data)=>{this.shownStat=data;}
     )
   }
 
