@@ -28,7 +28,6 @@ export class LoginService {
            .pipe(
                tap((loginResponse)=>{ 
                  this.sauvegarderJeton(loginResponse);
-                 this.logged=true;
                 })
            );
  }
@@ -43,7 +42,6 @@ export class LoginService {
             .pipe(
                 tap((loginResponse)=>{ 
                   this.sauvegarderJeton(loginResponse);
-                  this.logged=true;
                 })
             );
   }
@@ -81,6 +79,7 @@ export class LoginService {
        if(loginResponse.token!=null){
          sessionStorage.setItem('token',` ${loginResponse.token}`);
          sessionStorage.setItem('user',` ${loginResponse.username}`);
+         this.logged=true;
        }
        else {
          console.log(loginResponse.message)};
