@@ -8,6 +8,7 @@ import { ReponseApiEtablissements } from '../common/data/reponses-api';
 import { forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { EtablissementEntrant } from '../common/data/etablissement-entrant';
+import { LoginService } from '../common/service/login.service';
 
 @Component({
   selector: 'app-page-resultat',
@@ -27,7 +28,7 @@ export class PageResultatComponent implements OnInit {
   builder: Builder = new Builder();
   reponseAPIconcat: ReponseApiEtablissements = new ReponseApiEtablissements();
 
-  constructor(private recherchesService: RecherchesService, private exportData: ExportDataService) {
+  constructor(private recherchesService: RecherchesService, private exportData: ExportDataService,public loginService: LoginService) {
     this.initDepartements();
   }
 
@@ -62,6 +63,10 @@ export class PageResultatComponent implements OnInit {
           console.log(err);
         }
       )
+  }
+
+  resetRecherche(){
+    this.recherche= new Recherche();
   }
   
   onSaveResearch(){
@@ -191,6 +196,10 @@ export class PageResultatComponent implements OnInit {
     if (recherche.denomination != null && recherche.code_postal != "") {
       let denomination = "&denomnation=" + recherche.denomination;
       extentionURL = extentionURL + denomination;
+    }
+    if (recherche.activite_principale != null && recherche.activite_principale != "") {
+      let activite_principale = "&activite_principale=" + recherche.activite_principale;
+      extentionURL = extentionURL + activite_principale;
     }
     if (recherche.date_creation != null && recherche.code_postal != "") {
       let date_creation = "&date_creation=" + recherche.date_creation;

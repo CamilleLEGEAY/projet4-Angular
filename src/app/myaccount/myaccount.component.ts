@@ -15,10 +15,12 @@ export class MyaccountComponent implements OnInit {
   login : Login  = new Login();
   loginUpdate : LoginUpdate = new LoginUpdate();
   message : string;
+  username : string ;
 
   constructor(private loginService : LoginService, private router: Router) { }
 
   ngOnInit(): void {
+    this.username=sessionStorage.getItem('user');
   }
 
   update(){

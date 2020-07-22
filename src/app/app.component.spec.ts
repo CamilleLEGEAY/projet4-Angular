@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'projet4-Angular'`, () => {
+  it(`should have as title 'rlef'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('projet4-Angular');
+    expect(app.title).toEqual('rlef');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('projet4-Angular app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('rlef app is running!');
   });
 });

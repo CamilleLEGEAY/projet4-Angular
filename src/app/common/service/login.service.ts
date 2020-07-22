@@ -12,6 +12,8 @@ import { environment } from 'src/environments/environment';
 })
 export class LoginService {
 
+  logged:boolean = false;
+
   private _headers = new HttpHeaders({'Content-Type': 'application/json'});
   
   constructor(private http : HttpClient) { }
@@ -21,12 +23,12 @@ export class LoginService {
    * @param login 
    */
   public postRegister(login: Login): Observable<LoginResponse>{
-    let url= environment.msLogin+"/public/newUser";
-    //let url= "/msLogin/public/newUser";
-    console.log(url);
+    let url= environment.msLogin+"/msLogin/public/newUser";
     return this.http.post<LoginResponse>(url,login, {headers: this._headers} )
            .pipe(
-               tap((loginResponse)=>{ console.log(loginResponse.token); this.sauvegarderJeton(loginResponse);})
+               tap((loginResponse)=>{ 
+                 this.sauvegarderJeton(loginResponse);
+                })
            );
  }
 
@@ -36,11 +38,11 @@ export class LoginService {
    */
   public postLogin(login: Login): Observable<LoginResponse>{
      let url=environment.msLogin+"/msLogin/public/login";
-     //let url="/msLogin/public/login";
-     console.log(url);
      return this.http.post<LoginResponse>(url,login, {headers: this._headers} )
             .pipe(
-                tap((loginResponse)=>{ this.sauvegarderJeton(loginResponse);})
+                tap((loginResponse)=>{ 
+                  this.sauvegarderJeton(loginResponse);
+                })
             );
   }
 
@@ -50,7 +52,6 @@ export class LoginService {
    */
   public postUpdate(loginUpdate: LoginUpdate): Observable<String>{
     let url=environment.msLogin+"/msLogin/updateUser";
-    //let url="/msLogin/updateUser";
     return this.http.put<String>(url,loginUpdate, {headers: this._headers} )
   }
 
@@ -60,10 +61,13 @@ export class LoginService {
    */
   public postDelete(): Observable<LoginResponse>{
     let url=environment.msLogin+"/msLogin/supprUser/"+sessionStorage.getItem('token').trim();
-    //let url="/msLogin/supprUser/"+sessionStorage.getItem('token').trim();
-    return this.http.delete<LoginResponse>(url, {headers: this._headers} )
+    return this.http.delete<LoginResponse>(url)
     .pipe(
-      tap((loginResponse)=>{ sessionStorage.setItem('token',loginResponse.token);})
+      tap((loginResponse)=>{ 
+        sessionStorage.setItem('token',loginResponse.token);
+        this.logged=false;
+        
+      })
     );
   }
 
@@ -74,6 +78,8 @@ export class LoginService {
   private sauvegarderJeton(loginResponse:LoginResponse){
        if(loginResponse.token!=null){
          sessionStorage.setItem('token',` ${loginResponse.token}`);
+         sessionStorage.setItem('user',` ${loginResponse.username}`);
+         this.logged=true;
        }
        else {
          console.log(loginResponse.message)};

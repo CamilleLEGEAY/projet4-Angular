@@ -16,8 +16,6 @@ export class StatsService {
   
   initYesterday(): Observable<Etablissement[]>{
     let url = environment.msStats+"/msStats/findAll";
-    //let url = "/msStats/findAll";
-    console.log(url);
       return this.http.get<Etablissement[]>(url, {headers: this._headers});
   }
 

@@ -11,4 +11,8 @@ export class FooterComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  goToTop(event){
+    event.preventDefault();
+    window.scrollTo(0,0);
+  }
 }

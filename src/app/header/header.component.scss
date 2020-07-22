@@ -1,6 +1,28 @@
-#header {
-    background-color :  darkcyan;
+::ng-deep .navCss nav
+   {
+    background-color: #293d3d;
+   }
+
+.my-form
+{
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
 }
-.text{
-    color: white;
+
+.my-form .row
+{
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.login-form
+{
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.login-form .row
+{
+    margin-left: 0;
+    margin-right: 0;
 }

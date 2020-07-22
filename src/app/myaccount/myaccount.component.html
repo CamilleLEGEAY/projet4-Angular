@@ -1,19 +1,22 @@
-<input type="button" value="Supprimer le compte" class="btn btn-primary" (click)="delete()" />
-
-<form #formMyaccount="ngForm" class="form-horizontal">
-
-    <div class="form-group row">
-        <label class="col-sm-4">username : </label>
-        <div class="col-sm-8">
-            <input [(ngModel)]="login.username" name="username" required />
+<section class="page-section bg-light" id="zoneResultat">
+    <div class="container col-sm-7">
+        <br />
+        <br />
+        <div id="titre" class="text-center">
+            <h2 class="section-heading text-uppercase">Bonjour {{username}}</h2>
         </div>
-    </div>
+        <br />
+        <br />
+        <input type="button" value="Supprimer mon compte" mdbBtn color="default" class="waves-light" mdbWavesEffect
+            (click)="delete()" />
+        <br />
+        <hr />
 
-    <div class="form-group row">
-        <div class="col-sm-8 offset-sm-4">
-            <input type="button" [disabled]="!formMyaccount.form.valid" class="btn btn-primary" value="Enregistrer"
-                (click)="update()" />
-            <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
-        </div>
+        
+        <br />
+        <br />
+        <br />
+        <h4 class="text-uppercase">Mes recherches</h4>
+        <br />
     </div>
-</form>
+</section>
