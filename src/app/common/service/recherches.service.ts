@@ -42,11 +42,9 @@ export class RecherchesService {
 
   postSearch(recherche:Recherche): Observable<String>{
     let url = environment.msSauvegarde+"/msSauvegarde/public/SaveRecherche";
-    //let url = "/msSauvegarde/public/SaveRecherche";
     let rechercheToSave: RechercheToSave = new RechercheToSave();
     rechercheToSave.recherche= recherche ;
     rechercheToSave.token = sessionStorage.getItem('token').trim();
-    console.log(url);
     return this.http.post<String>(url,rechercheToSave, {headers: this._headers})
   }
 

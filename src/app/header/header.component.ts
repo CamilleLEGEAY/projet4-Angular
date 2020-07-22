@@ -12,42 +12,57 @@ import { LoginResponse } from '../common/data/login-response';
 })
 export class HeaderComponent implements OnInit {
 
-  loginRegister: Login  = new Login();
-  loginLogin : Login  = new Login();
-  message : string;
+  loginRegister: Login = new Login();
+  loginLogin: Login = new Login();
+  messageErr: string;
+  messageOK: string;
+  messageErrRegister: string;
+  messageOKRegister: string;
 
-  constructor(private router: Router,public loginService: LoginService) { }
+  constructor(private router: Router, public loginService: LoginService) { }
 
   ngOnInit(): void {
   }
 
-  onRegister(){
+  onRegister() {
     this.loginService.postRegister(this.loginRegister)
-    .subscribe(
-         (loginResponse : LoginResponse)=>{
-               console.log(JSON.stringify(loginResponse));
-               this.message = loginResponse.message;
-          },
-         (err)=>{console.log(err); }
-    );
+      .subscribe(
+        (loginResponse: LoginResponse) => {
+          if (loginResponse.message.startsWith("Bonjour")) {
+            this.messageOKRegister = loginResponse.message;
+          } else {
+            this.messageErrRegister = loginResponse.message;
+            this.loginRegister = new Login();
+          }
+        },
+        (err) => {
+          console.log(err);
+          this.messageErrRegister = "Votre identifiant ou votre mot de passe est incorrect";
+          this.loginRegister = new Login();
+        }
+      );
   }
 
-  onLogin(){
+  onLogin() {
     this.loginService.postLogin(this.loginLogin)
-    .subscribe(
-         (loginResponse : LoginResponse)=>{
-               console.log(JSON.stringify(loginResponse));
-               this.message = loginResponse.message;
-          },
-         (err)=>{console.log(err); this.message = "Votre identifiant ou votre mot de passe est incorrect";}
-    );
+      .subscribe(
+        (loginResponse: LoginResponse) => {
+          if (loginResponse.message.startsWith("Bonjour")) {
+            this.messageOK = loginResponse.message;
+          } else {
+            this.messageErr = loginResponse.message;
+            this.loginLogin = new Login();
+          }
+        },
+        (err) => { console.log(err); this.messageErr = "Votre identifiant ou votre mot de passe est incorrect"; this.loginLogin = new Login(); }
+      );
   }
 
-  onLogout():void {
+  onLogout(): void {
     sessionStorage.setItem('token', null);
-    let link = [ '/pageresultat'];
+    let link = ['/pageresultat'];
     this.router.navigate(link);
-    this.loginService.logged=false;
+    this.loginService.logged = false;
   }
 
 }
