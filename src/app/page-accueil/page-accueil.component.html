@@ -1,19 +1,31 @@
-<p>page-accueil works!</p>
-
-<br />
-<br />
-<div id="resultat" class="row">
-    <div *ngFor="let etablissement of shownStat" class="col-lg-4 col-sm-5 mb-4">
-        <div class="portfolio-item">
-            <a class="portfolio-link" data-toggle="modal">
-                <div class="portfolio-hover">
-                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+<section class="page-section bg-light" id="zoneResultat">
+    <div class="container col-sm-7">
+        <div id="titre" class="text-center">
+            <br />
+            <br />
+            <h2 class="section-heading text-uppercase ">Bienvenu sur     <img
+                src="https://camillelegeay.github.io/images/logopetit.png"></h2>
+            <br />
+            <h4 class="section-heading">Trouverez les entreprises près de chez vous.</h4>
+            <br />
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h4 class="text-uppercase">Entreprises crées ce mois-ci </h4>
+        <br />
+        <div id="resultat" class="row">
+            <ul *ngFor="let etablissement of shownStat" class="col-lg-4 col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-text">{{etablissement.date_creation}}</div>
+                        <div class="card-text">{{etablissement.code_postal}}</div>
+                        <div class="card-text">{{etablissement.activite_principale}}</div>
+                    </div>
                 </div>
-            </a>
-            <div class="portfolio-caption">
-                <div class="portfolio-caption-heading">{{etablissement.code_postal}}</div>
-                <div class="portfolio-caption-subheading text-muted">{{etablissement.activite_principale}}</div>
-            </div>
+            </ul>
         </div>
     </div>
-</div>
+</section>
