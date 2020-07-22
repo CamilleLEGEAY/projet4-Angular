@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   msLogin: 'https://mslogin.herokuapp.com', 
   msStats: 'https://msstats.herokuapp.com',
   msSauvegarde: 'https://mssauvegarde.herokuapp.com',

@@ -197,6 +197,10 @@ export class PageResultatComponent implements OnInit {
       let denomination = "&denomnation=" + recherche.denomination;
       extentionURL = extentionURL + denomination;
     }
+    if (recherche.activite_principale != null && recherche.activite_principale != "") {
+      let activite_principale = "&activite_principale=" + recherche.activite_principale;
+      extentionURL = extentionURL + activite_principale;
+    }
     if (recherche.date_creation != null && recherche.code_postal != "") {
       let date_creation = "&date_creation=" + recherche.date_creation;
       extentionURL = extentionURL + date_creation;

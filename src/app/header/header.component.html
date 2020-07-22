@@ -24,9 +24,9 @@
                                 data-target="#basicExample" (click)="login.show()">Se connecter</a>
                             <a *ngIf="!loginService.logged" class="dropdown-item" data-toggle="modal"
                                 data-target="#basicExample" (click)="register.show()">Créer un compte</a>
-                            <a *ngIf="loginService.logged" class="dropdown-item" href="/myaccount">Mon Compte</a>
+                            <a *ngIf="loginService.logged" class="dropdown-item" routerLink="/myaccount">Mon Compte</a>
                             <div *ngIf="loginService.logged" class="divider dropdown-divider"></div>
-                            <a *ngIf="loginService.logged" class="dropdown-item" href="#">Déconnexion</a>
+                            <a *ngIf="loginService.logged" class="dropdown-item" (click)="onLogout()">Déconnexion</a>
                         </div>
                     </div>
                 </a>

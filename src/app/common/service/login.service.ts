@@ -28,7 +28,6 @@ export class LoginService {
            .pipe(
                tap((loginResponse)=>{ 
                  this.sauvegarderJeton(loginResponse);
-                 console.log(JSON.stringify(loginResponse));
                  this.logged=true;
                 })
            );
