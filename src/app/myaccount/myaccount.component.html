@@ -19,4 +19,57 @@
         <h4 class="text-uppercase">Mes recherches</h4>
         <br />
     </div>
+    <div class="container col-sm-10">
+        <div id="resultat" class="row">
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Code postal</th>
+                        <th scope="col">Commune</th>
+                        <th scope="col">Activite Principale</th>
+                        <th scope="col">Date de création</th>
+                        <th scope="col">Effectifs</th>
+                        <th scope="col">Nombre de resultats</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let recherche of listeRecherche">
+                        <td id="nom">
+                            <div class="tr">
+                                {{recherche.code_postal}}
+                            </div>
+                        </td>
+                        <td id="siret">
+                            <div class="tr">
+                                {{recherche.libelle_commune}}
+                            </div>
+                        </td>
+                        <td id="nom">
+                            <div class="tr">
+                                {{recherche.activite_principale}}
+                            </div>
+                        </td>
+                        <td id="nom">
+                            <div class="tr">
+                                {{recherche.date_creation}}
+                            </div>
+                        </td>
+                        <td id="nom">
+                            <div class="tr">
+                                {{recherche.effectifs}}
+                            </div>
+                        </td>
+                        <td id="nom">
+                            <div class="tr">
+                                {{recherche.nb_resultats}}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br />
+        <br />
+    </div>
 </section>

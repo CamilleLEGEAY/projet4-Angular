@@ -4,6 +4,8 @@ import { Login } from '../common/data/login';
 import { LoginResponse } from '../common/data/login-response';
 import { Router } from '@angular/router';
 import { LoginUpdate } from '../common/data/login-update';
+import { Recherche } from '../common/data/recherche';
+import { RecherchesService } from '../common/service/recherches.service';
 
 @Component({
   selector: 'app-myaccount',
@@ -16,11 +18,13 @@ export class MyaccountComponent implements OnInit {
   loginUpdate : LoginUpdate = new LoginUpdate();
   message : string;
   username : string ;
+  listeRecherche : Recherche[] = [];
 
-  constructor(private loginService : LoginService, private router: Router) { }
+  constructor(private loginService : LoginService, private router: Router, private recherchesService:RecherchesService) { }
 
   ngOnInit(): void {
     this.username=sessionStorage.getItem('user');
+    this.findResearches();
   }
 
   update(){
@@ -35,7 +39,6 @@ export class MyaccountComponent implements OnInit {
       (err)=>{console.log(err); }
     );
   }
-
   
   delete(){
     this.loginService.postDelete()
@@ -56,4 +59,14 @@ export class MyaccountComponent implements OnInit {
       this.router.navigate(link);
     }
   }
+
+  findResearches(){
+    this.recherchesService.findResearches().subscribe(
+      data =>{
+        this.listeRecherche = this.listeRecherche.concat(data);
+      }
+    )
+  }
+
+
 }

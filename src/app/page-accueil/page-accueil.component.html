@@ -3,29 +3,82 @@
         <div id="titre" class="text-center">
             <br />
             <br />
-            <h2 class="section-heading text-uppercase ">Bienvenu sur     <img
-                src="https://camillelegeay.github.io/images/logopetit.png"></h2>
+            <h2 class="section-heading text-uppercase ">Bienvenue sur </h2><img
+                src="https://camillelegeay.github.io/images/logopetit.png" />
             <br />
-            <h4 class="section-heading">Trouverez les entreprises près de chez vous.</h4>
+            <br />
+            <h4 class="section-heading">Trouvez les entreprises près de chez vous.</h4>
             <br />
         </div>
         <br />
         <br />
-        <br />
-        <br />
-        <br />
-        <h4 class="text-uppercase">Entreprises créées ce mois-ci </h4>
-        <br />
-        <div id="resultat" class="row">
-            <ul *ngFor="let etablissement of shownStat" class="col-lg-4 col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-text">{{etablissement.date_creation}}</div>
-                        <div class="card-text">{{etablissement.code_postal}}</div>
-                        <div class="card-text">{{etablissement.activite_principale}}</div>
+
+        <div class="container text-center text-md-left mt-5">
+            <div class="row mt-3">
+
+                <!-- Grid column -->
+                <div class="col-md-6 col-lg-6 col-xl-6 mx-auto mb-4">
+                    <h4 class="text-uppercase text-center">Créations d'entreprises en france</h4>
+                    <div class="container" style="display: block">
+                        <canvas id="lineCrea" width="200px" height="200px"></canvas>
                     </div>
                 </div>
-            </ul>
+                <!-- Grid column -->
+                <div class="col-md-6 col-lg-6 col-xl-6 mx-auto mb-4">
+                    <br />
+                    <br />
+                    <div class="container">
+                        <div class="card border-info mx-sm-3 p-3">
+                            <div class="text-uppercase card border-info shadow text-info p-3 my-card text-center">
+                                <h3>Ce mois ci</h3>
+                            </div>
+                            <br />
+                            <div class="text-info text-center mt-2">
+                                <h1>{{nbCreaMonth}}</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="container">
+                        <div class="card border-info mx-sm-3 p-3">
+                            <div class="text-uppercase card border-info shadow text-info p-3 my-card text-center">
+                                <h3>Hier</h3>
+                            </div>
+                            <br />
+                            <div class="text-info text-center mt-2">
+                                <h1>{{nbCreaYesterday}}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center text-md-left mt-5">
+            <div class="row mt-3">
+
+                <!-- Grid column -->
+                <div class="col-md-6 col-lg-6 col-xl-6 mx-auto mb-4">
+                    <h4 class="text-uppercase text-center">Créations par activité ce mois-ci</h4>
+                    <br />
+                    <div class="container" style="display: block">
+                        <canvas id="doughnutActivite" width="200px" height="200px"></canvas>
+                    </div>
+                </div>
+                <!-- Grid column -->
+                <div class="col-md-6 col-lg-6 col-xl-6 mx-auto mb-4">
+                    <h4 class="text-uppercase text-center">Créations par département ce mois-ci</h4>
+                    <br />
+                    <div class="container" style="display: block">
+                        <canvas id="doughnutDepartement" width="200px" height="200px"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <br />
+    <br />            <br />
+    <br />            <br />
+    <br />            <br />
+    <br />            <br />
+    <br />            <br />
 </section>

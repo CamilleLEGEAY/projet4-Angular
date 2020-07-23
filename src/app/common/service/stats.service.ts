@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { Etablissement } from '../data/etablissement';
+import { ReponseMsStats } from '../data/reponse-msstats';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +14,9 @@ export class StatsService {
   constructor(private http: HttpClient) { }
   
   
-  initYesterday(): Observable<Etablissement[]>{
+  initMonth(): Observable<ReponseMsStats[]>{
     let url = environment.msStats+"/msStats/findAll";
-      return this.http.get<Etablissement[]>(url, {headers: this._headers});
+      return this.http.get<ReponseMsStats[]>(url, {headers: this._headers});
   }
 
 }

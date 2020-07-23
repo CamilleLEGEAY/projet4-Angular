@@ -23,6 +23,7 @@ export class PageResultatComponent implements OnInit {
   nbResultat: number = null;
   departements: any[];
   listeCP: any[];
+  showLoader: boolean = false;
 
   //local
   builder: Builder = new Builder();
@@ -70,10 +71,13 @@ export class PageResultatComponent implements OnInit {
   }
   
   onSaveResearch(){
+    //this.showLoader =true;
     console.log(this.nbResultat);
     this.recherche.nb_resultats=this.nbResultat;
     this.recherchesService.postSearch(this.recherche).subscribe(
-      (data)=>{console.log()}
+      (data)=>{console.log();
+       // this.showLoader =false;
+      }
     )
   }
 
@@ -81,6 +85,7 @@ export class PageResultatComponent implements OnInit {
    * to get every data of the research to produce the Excel fill
    */
   onCreateExcel() {
+    this.showLoader =true;
     console.log("extraction started");
     this.reponseAPIconcat = new ReponseApiEtablissements();
     let url = environment.urlEtablissement + "&per_page=100";
@@ -122,9 +127,10 @@ export class PageResultatComponent implements OnInit {
       }
       if (this.reponseAPIconcat.etablissements.length === this.nbResultat) {
         this.print(this.reponseAPIconcat.etablissements);
+        this.showLoader =false;
       }
     },
-      (err) => { console.log(err); });
+      (err) => { console.log(err); this.showLoader =false; });
   }
   /**
    * print this.reponseAPIcancat.etablissement
@@ -141,6 +147,7 @@ export class PageResultatComponent implements OnInit {
    * to know how many responses for a research and get first page
    */
   onRecherche() {
+    this.showLoader = true;
     this.nbResultat = null;
     console.log(this.recherche);
     let url = environment.urlEtablissement + "&per_page=20&page=1";
@@ -154,9 +161,10 @@ export class PageResultatComponent implements OnInit {
       console.log("I'm doing doSearch");
       this.recherchesService.doSearch(url).subscribe((reponse) => {
         this.shownEtablissement = this.builder.arrayEtablissementBuilder(reponse.etablissements);
+        this.showLoader =false;
         this.nbResultat = reponse.meta.total_results;
       },
-        (err) => { console.log(err); });
+        (err) => { console.log(err); this.showLoader =false;});
     }
   }
   /**
@@ -179,8 +187,9 @@ export class PageResultatComponent implements OnInit {
       }
       this.shownEtablissement = this.builder.arrayEtablissementBuilder(this.reponseAPIconcat.etablissements);
       this.nbResultat = this.reponseAPIconcat.meta.total_results;
+      this.showLoader =false;
     },
-      (err) => { console.log(err); });
+      (err) => { console.log(err); this.showLoader =false;});
   }
   /**
    * fill url for research with basic criteria
