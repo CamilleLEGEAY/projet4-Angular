@@ -34,7 +34,7 @@
                     <label class="col-sm-4">Effectifs</label>
                     <div class="col-sm-6">
                         <select id="effectif" name="tranche_effectif" [(ngModel)]="recherche.effectifs"
-                            class="form-control mb-4" >
+                            class="form-control mb-4">
                             <option value="1"> 0 à 9 salariés</option>
                             <option value="11"> 10 à 19 salariés</option>
                             <option value="12"> 20 à 49 salariés</option>
@@ -49,8 +49,8 @@
                     <label class="col-sm-4">Date de création</label>
                     <div class="col-sm-6">
                         <input type="text" [(ngModel)]="recherche.date_creation" name="date_creation"
-                        pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" class="form-control mb-4 col-sm-4"
-                        placeholder="AAAA-MM-JJ" />
+                            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" class="form-control mb-4 col-sm-4"
+                            placeholder="AAAA-MM-JJ" />
                     </div>
                 </div>
                 <div class="form-group row">
@@ -59,7 +59,7 @@
                         <input style="width: 150px;" type="button" [disabled]="!formLogin.form.valid" mdbBtn
                             color="default" class="waves-light" mdbWavesEffect value="Reset"
                             (click)="resetRecherche()" />
-                            &ensp;&ensp;&ensp;
+                        &ensp;&ensp;&ensp;
                         <input style="width: 150px;" type="button" [disabled]="!formLogin.form.valid" mdbBtn
                             color="default" class="waves-light" mdbWavesEffect value="Chercher"
                             (click)="onRecherche()" />
@@ -67,7 +67,12 @@
                 </div>
             </form>
         </div>
-        <br />
+        <div *ngIf="showLoader">
+            <br />
+            <div class="container text-center">
+                <img src="https://camillelegeay.github.io/gif/Spinner-grey-rlef.gif" alt="Merci de patienter ..." />
+            </div>
+        </div>
         <br />
         <br />
         <h4 class="text-uppercase">Résultats de la recherche : {{nbResultat}}</h4>
@@ -80,7 +85,7 @@
                 <label>Exporter en Excel</label>
             </button>&nbsp;&nbsp;&nbsp;
             <button type='button' id="btnSave" value='Save' mdbBtn color="default" class="waves-light" mdbWavesEffect
-                style="width: 170px; height: 100px;" (click)="onSaveResearch()" [disabled]="!loginService.logged" >
+                style="width: 170px; height: 100px;" (click)="onSaveResearch()" [disabled]="!loginService.logged">
                 <mdb-icon far icon="save" size="2x"></mdb-icon> <br />
                 <label>Sauvegarder la recherche</label>
             </button>
@@ -88,20 +93,5 @@
         <br />
         <br />
         <br />
-        <div id="resultat" class="row">
-            <div *ngFor="let etablissement of shownEtablissement" class="col-lg-4 col-sm-5 mb-4">
-                <div class="portfolio-item">
-                    <a class="portfolio-link" data-toggle="modal">
-                        <div class="portfolio-hover">
-                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                    </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">{{etablissement.denomination}}</div>
-                        <div class="portfolio-caption-subheading text-muted">{{etablissement.siret}}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
