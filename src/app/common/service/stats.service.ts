@@ -14,7 +14,7 @@ export class StatsService {
   constructor(private http: HttpClient) { }
   
   
-  initYesterday(): Observable<ReponseMsStats[]>{
+  initMonth(): Observable<ReponseMsStats[]>{
     let url = environment.msStats+"/msStats/findAll";
       return this.http.get<ReponseMsStats[]>(url, {headers: this._headers});
   }

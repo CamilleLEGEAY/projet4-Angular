@@ -10,28 +10,28 @@
         <div id="recherche" class="text-center">
             <form #formLogin="ngForm" class="form-horizontal">
                 <div class="form-group row">
-                    <label class="col-sm-4">Code postal</label>
+                    <label class="col-sm-4 mt-2" style="text-align: right;">Code postal</label>
                     <div class="col-sm-6">
                         <input type="text" [(ngModel)]="recherche.code_postal" name="code_postal" pattern="[0-9]{5}"
                             class="form-control mb-4" placeholder="ex : 77100" />
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4">Ville</label>
+                    <label class="col-sm-4 mt-2" style="text-align: right;">Ville</label>
                     <div class="col-sm-6">
                         <input type="text" [(ngModel)]="recherche.libelle_commune" name="libelle_commune"
                             class="form-control mb-4" placeholder="ex : Meaux" />
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4">Code NAF/APE </label>
+                    <label class="col-sm-4 mt-2" style="text-align: right;">Code NAF/APE </label>
                     <div class="col-sm-6">
                         <input type="text" [(ngModel)]="recherche.activite_principale" name="activite_principale"
                             pattern="[0-9]{2}.[0-9]{2}[A-Z]{1}" class="form-control mb-4" placeholder="ex : 37.00Z" />
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4">Effectifs</label>
+                    <label class="col-sm-4 mt-2" style="text-align: right;">Effectifs</label>
                     <div class="col-sm-6">
                         <select id="effectif" name="tranche_effectif" [(ngModel)]="recherche.effectifs"
                             class="form-control mb-4">
@@ -46,10 +46,10 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4">Date de création</label>
+                    <label class="col-sm-4 mt-2" style="text-align: right;">Date de création</label>
                     <div class="col-sm-6">
                         <input type="text" [(ngModel)]="recherche.date_creation" name="date_creation"
-                            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" class="form-control mb-4 col-sm-4"
+                            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" class="form-control mb-4"
                             placeholder="AAAA-MM-JJ" />
                     </div>
                 </div>
