@@ -5,7 +5,6 @@ import { Chart } from 'node_modules/chart.js';
 import { RecherchesService } from '../common/service/recherches.service';
 import { environment } from 'src/environments/environment';
 import { DateServices } from '../common/dao/date';
-import { CompileShallowModuleMetadata } from '@angular/compiler';
 
 
 @Component({
@@ -27,6 +26,13 @@ export class PageAccueilComponent implements OnInit {
 
   //utils
   dateBuilder: DateServices = new DateServices;
+  donutColors = ['#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360','#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360','#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360',
+  '#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360','#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360','#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360',
+  '#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360','#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360','#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360', 
+  '#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360','#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360', '#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360',
+  '#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360','#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360', '#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360',
+  '#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360','#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360', '#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360',
+  '#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360','#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360','#46BFBD', '#F7464A', '#FDB45C', '#949FB1', '#4D5360']
 
   constructor(private statsService: StatsService, private recherchesService: RecherchesService) { }
 
@@ -53,6 +59,8 @@ export class PageAccueilComponent implements OnInit {
     this.statsService.initMonth().subscribe(
       (data) => {
         this.initLineCrea(data);
+        this.initDoughnutDepartement(data);
+        this.initDoughnutActivite(data);
       }
     )
   }
@@ -65,10 +73,10 @@ export class PageAccueilComponent implements OnInit {
     );
   }
 
-  initLineCrea(data :ReponseMsStats[]) {
+  initLineCrea(data: ReponseMsStats[]) {
     let map: Map<string, number> = new Map();
-    let listeData : number[]=[];
-    let listeLabels:string[]=[];
+    let listeData: number[] = [];
+    let listeLabels: string[] = [];
     for (let item of data) {
       this.nbCreaMonth = this.nbCreaMonth + item.qtes;
       if (!map.has(item.date_creation)) {
@@ -105,6 +113,99 @@ export class PageAccueilComponent implements OnInit {
             }
           }]
         }
+      }
+    });
+  }
+
+  initDoughnutActivite(data: ReponseMsStats[]) {
+    let map: Map<string, number> = new Map();
+    let listeData: number[] = [];
+    let listeLabels: string[] = [];
+    for (let item of data) {
+      if (!map.has(item.activite_principale)) {
+        map.set(item.activite_principale, item.qtes);
+      }
+      else {
+        let itemSaved = map.get(item.activite_principale);
+        itemSaved = itemSaved + item.qtes;
+        map.set(item.activite_principale, itemSaved);
+      }
+    }
+    for (var [key, value] of map) {
+      listeData.push(value);
+      listeLabels.push(key);
+    }
+
+    new Chart("doughnutActivite", {
+      type: 'doughnut',
+      data: {
+        labels: listeLabels,
+        datasets: [{
+          label: 'entreprises créées',
+          data: listeData,
+          backgroundColor: this.donutColors,
+          hoverBackgroundColor: ['#5AD3D1', '#FF5A5E', '#FFC870', '#A8B3C5', '#616774'],
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        legend: {
+          display: false,
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            }
+          }]
+        }
+      }
+      }
+    });
+  }
+
+  initDoughnutDepartement(data: ReponseMsStats[]) {
+    let map: Map<string, number> = new Map();
+    let listeData: number[] = [];
+    let listeLabels: string[] = [];
+    for (let item of data) {
+      this.nbCreaMonth = this.nbCreaMonth + item.qtes;
+      if (!map.has(item.code_postal)) {
+        map.set(item.code_postal, item.qtes);
+      }
+      else {
+        let itemSaved = map.get(item.code_postal);
+        itemSaved = itemSaved + item.qtes;
+        map.set(item.code_postal, itemSaved);
+      }
+    }
+    for (var [key, value] of map) {
+      listeData.push(value);
+      listeLabels.push(key);
+    }
+
+    new Chart("doughnutDepartement", {
+      type: 'doughnut',
+      data: {
+        labels: listeLabels,
+        datasets: [{
+          label: 'entreprises créées',
+          data: listeData,
+          backgroundColor: this.donutColors,
+          hoverBackgroundColor: ['#5AD3D1', '#FF5A5E', '#FFC870', '#A8B3C5', '#616774'],
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        legend: {
+          display: false,
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            }
+          }]
+        }
+      }
       }
     });
   }
