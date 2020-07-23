@@ -77,20 +77,71 @@
         <br />
         <h4 class="text-uppercase">Résultats de la recherche : {{nbResultat}}</h4>
         <br />
-        <div>
+        <div class="row">
             <button type='button' id="btnExp" value='Export Excel' mdbBtn color="default" class="waves-light"
-                mdbWavesEffect style="width: 170px; height: 100px;" (click)="onCreateExcel()"
-                [disabled]="nbResultat>10000">
+                mdbWavesEffect style="width: 170px; height: 100px;" (click)="onCreateExcel()" [disabled]="nbResultat>10000">
                 <mdb-icon far icon="file-excel" size="2x"></mdb-icon><br />
                 <label>Exporter en Excel</label>
-            </button>&nbsp;&nbsp;&nbsp;
-            <button type='button' id="btnSave" value='Save' mdbBtn color="default" class="waves-light" mdbWavesEffect
-                style="width: 170px; height: 100px;" (click)="onSaveResearch()" [disabled]="!loginService.logged">
-                <mdb-icon far icon="save" size="2x"></mdb-icon> <br />
-                <label>Sauvegarder la recherche</label>
             </button>
+            <div data-toggle="tooltip" data-placement="right"
+                title="Connecter vous si vous souhaitez sauvegarder vos critères de recherche">
+                <button type='button' id="btnSave" value='Save' mdbBtn color="default" class="waves-light"
+                    mdbWavesEffect style="width: 170px; height: 100px;" (click)="onSaveResearch()" [disabled]="!loginService.logged">
+                    <mdb-icon far icon="save" size="2x"></mdb-icon> <br />
+                    <label>Sauvegarder la recherche</label>
+                </button>
+            </div>
         </div>
         <br />
+        <p *ngIf="nbResultat>10000" style="color: orangered">*Extraction possible uniquement pour moins de 10&nbsp;000 résultats</p>
+        <br />
+        <br />
+        <h4 class="text-uppercase">Extrait :</h4>
+        <br />
+        <br />
+        <div id="resultat" class="row">
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Nom de l'entreprise</th>
+                        <th scope="col">Identifiant siret</th>
+                        <th scope="col">Date de création</th>
+                        <th scope="col">Effectifs</th>
+                        <th scope="col">Activité principale</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let etablissement of shownEtablissement">
+                        <td id="nom">
+                            <div class="tr">
+                                {{etablissement.denomination}}
+                            </div>
+                        </td>
+                        <td id="siret">
+                            <div class="tr">
+                                {{etablissement.siret}}
+                            </div>
+                        </td>
+                        <td id="nom">
+                            <div class="tr">
+                                {{etablissement.date_creation}}
+                            </div>
+                        </td>
+                        <td id="nom">
+                            <div class="tr">
+                                {{etablissement.effectifs}}
+                            </div>
+                        </td>
+                        <td id="nom">
+                            <div class="tr">
+                                {{etablissement.activite_principale}}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <br />
         <br />
     </div>
