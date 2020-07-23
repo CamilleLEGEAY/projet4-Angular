@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Etablissement } from '../common/data/etablissement';
 import { StatsService } from '../common/service/stats.service';
+import { ReponseMsStats } from '../common/data/reponse-msstats';
+
 
 @Component({
   selector: 'app-page-accueil',
@@ -9,7 +10,7 @@ import { StatsService } from '../common/service/stats.service';
 })
 export class PageAccueilComponent implements OnInit {
 
-  shownStat: Etablissement[];
+  shownStat: ReponseMsStats[];
 
   constructor(private statsService: StatsService) { }
 
