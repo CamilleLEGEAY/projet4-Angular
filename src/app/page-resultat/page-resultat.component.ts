@@ -71,12 +71,13 @@ export class PageResultatComponent implements OnInit {
   }
   
   onSaveResearch(){
-    this.showLoader =true;
+    //this.showLoader =true;
     console.log(this.nbResultat);
     this.recherche.nb_resultats=this.nbResultat;
     this.recherchesService.postSearch(this.recherche).subscribe(
-      (data)=>{console.log()
-        this.showLoader =false;}
+      (data)=>{console.log();
+       // this.showLoader =false;
+      }
     )
   }
 

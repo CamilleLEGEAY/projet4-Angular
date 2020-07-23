@@ -48,4 +48,9 @@ export class RecherchesService {
     return this.http.post<String>(url,rechercheToSave, {headers: this._headers})
   }
 
+  findResearches(): Observable<Recherche[]>{
+    let url = environment.msSauvegarde+"/msSauvegarde/public/find";
+    let token = sessionStorage.getItem('token').trim();
+    return this.http.post<Recherche[]>(url,token, {headers: this._headers});
+  }
 }
